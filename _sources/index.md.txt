@@ -1,0 +1,29 @@
+# Godwin Houdji - about me
+
+Hey there 👋
+
+I'm a computer science engineer and currently a full-time data scientist
+in Benin.
+
+I work at the intersection of software development, scientific research.
+
+I'm interested in machine learning and its applications in healthcare 🏥
+and business 👨‍💼💰📈
+
+## Recent posts
+
+See the [blog archives](blog.md) for a more complete list.
+
+```{postlist}
+:date: "%Y-%m-%d"
+:format: "{date} - {title}"
+:excerpts:
+```
+
+```{toctree}
+:maxdepth: 2
+:hidden:
+about
+activities
+blog
+```
