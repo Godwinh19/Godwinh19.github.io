@@ -2,18 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>https://godwinh19.github.io/</id>
   <title>Godwin H</title>
-  <updated>2022-03-23T14:26:46.520911+00:00</updated>
+  <updated>2022-03-23T21:44:27.595823+00:00</updated>
   <link href="https://godwinh19.github.io/"/>
   <link href="https://godwinh19.github.io/blog/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.org/" version="0.10.23">ABlog</generator>
   <entry>
-    <id>https://godwinh19.github.io/posts/2022/hello-world/</id>
-    <title>Hello World</title>
-    <updated>2022-03-23T00:00:00+01:00</updated>
+    <id>https://godwinh19.github.io/posts/2022/bert-classification-for-research-papers/</id>
+    <title>Bert Classification For Research Papers</title>
+    <updated>2022-03-22T00:00:00+01:00</updated>
     <content type="html">&lt;div class="ablog-post-excerpt docutils container"&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Our goal is to build a model that uses the abstract and title of a paper to predict whether it will be rejected or not.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This is an article with code to refine BERT to perform text classification on a dataset of accepted and rejected scientific papers.&lt;/p&gt;
 &lt;/div&gt;
 </content>
-    <link href="https://godwinh19.github.io/posts/2022/hello-world/" rel="alternate"/>
-    <published>2022-03-23T00:00:00+01:00</published>
+    <link href="https://godwinh19.github.io/posts/2022/bert-classification-for-research-papers/" rel="alternate"/>
+    <summary>Our goal is to build a model that uses the abstract and title of a paper to predict whether it will be rejected or not.This is an article with code to refine BERT to perform text classification on a dataset of accepted and rejected scientific papers.</summary>
+    <category term="deeplearning" label="deep learning"/>
+    <category term="nlp" label="nlp"/>
+    <category term="bert" label="bert"/>
+    <category term="transformers" label="transformers"/>
+    <published>2022-03-22T00:00:00+01:00</published>
   </entry>
 </feed>

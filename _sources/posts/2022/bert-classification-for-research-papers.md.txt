@@ -1,0 +1,596 @@
+---
+blogpost: true
+date: Mar 22, 2022
+tags: deep learning, nlp, bert, transformers
+category: Deep Learning
+---
+
+# Bert Classification For Research Papers
+
+***Our goal is to build a model that uses the abstract and title of a paper to predict whether it will be rejected or not.***
+
+This is an article with code to refine BERT to perform text classification on a dataset of accepted and rejected scientific papers.
+
+In this article, we will:
+
+- Load the Papers-Dataset
+- Load a BERT model from [Huggingface](https://huggingface.co/)
+- Build our own model by combining BERT with a classifier
+- Train the model by refining BERT for our task
+- Save the model to use it to classify items
+
+At the end, you will have an architecture that you can reuse in your next text classification projects.
+
+## What is BERT?
+
+Introduced in 2018, [BERT: Bidirectional Encoder Representations from Transformers](https://arxiv.org/abs/1810.04805), according to its authors, is designed to pre-train deep bidirectional representations from unlabeled text by **conditioning left and right context** together in all layers.
+
+BERT arose to complement two word embedding techniques: [ELMo](https://paperswithcode.com/method/elmo) and [GPT](https://paperswithcode.com/method/gpt).
+While ELMo encodes the context bidirectionally but uses task-specific architectures GPT is task-independent but encodes the context from left to right.
+
+We can summarize the characteristics of these models as follows:
+
+| Model | Context             | Task            | Encode          |
+|-------|---------------------|-----------------|-----------------|
+| ELMo  | context sensitive ✅ | task specific   | bi-directional✅ |
+| GPT   | context sensitive   | task agnostic ✅ | left to right   |
+| BERT  | context sensitive   | task agnostic   | bi-directional  |
+
+### Tools and pre-requisites
+To build our model, we will work with the Pytorch framework and [Pytorch Lightning](https://www.pytorchlightning.ai/)
+
+## 1- Data preparation
+
+### 1-1 Loading data
+
+You can find the dataset used at this [address](https://raw.githubusercontent.com/Godwinh19/Papers-Dataset/main/data/ICLR%20papers%20datasets.csv)
+```python
+import numpy as np
+import pandas as pd
+import requests
+import io
+
+dataset_url = "https://raw.githubusercontent.com/Godwinh19/Papers-Dataset/main/data/ICLR%20papers%20datasets.csv"
+s = requests.get(dataset_url).content
+data = pd.read_csv(io.StringIO(s.decode('utf-8')), usecols=['title', 'abstract', 'accepted'])
+# Affichons l'entête de nos données
+data.head()
+```
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+    
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>title</th>
+      <th>abstract</th>
+      <th>accepted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>What Matters for On-Policy Deep Actor-Critic M...</td>
+      <td>In recent years, reinforcement learning (RL) h...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Theoretical Analysis of Self-Training with Dee...</td>
+      <td>Self-training algorithms, which train a model ...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Learning to Reach Goals via Iterated Supervise...</td>
+      <td>Current reinforcement learning (RL) algorithms...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Deep symbolic regression: Recovering mathemati...</td>
+      <td>Discovering the underlying mathematical expres...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Optimal Rates for Averaged Stochastic Gradient...</td>
+      <td>We analyze the convergence of the averaged sto...</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+In this table we have:
+- title: the title of the article
+- abstract: the abstract
+- accepted: field describing if the article has been accepted (1) or not (0)
+
+In our case, we will be interested in the fields *title*, *abstract*, *accepted*.
+
+### 1-2 Transforming the columns
+
+We are going to transform the *title* and *abstract* columns into a 
+single column called *description*; then rename the *accepted* field 
+into *label* by its function.
+
+```python
+data['description'] = data['title'] + " - " + data['abstract']
+transformed_data = data[['description', 'accepted']].rename(columns={'accepted': 'label'}).copy()
+transformed_data.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+    
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>description</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>What Matters for On-Policy Deep Actor-Critic M...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Theoretical Analysis of Self-Training with Dee...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Learning to Reach Goals via Iterated Supervise...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Deep symbolic regression: Recovering mathemati...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Optimal Rates for Averaged Stochastic Gradient...</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+### 1-3 Transformation of input data to the model
+
+> The sample data processing code can become messy and difficult to maintain; ideally, we want the dataset code to be decoupled from the model training code for better readability and modularity.
+>
+> <cite>pytorch docs</cite>
+
+With pytorch, we load the data with the `Dataset` class.
+
+```python
+from torch.utils.data import Dataset
+
+class PapersDataset(Dataset):
+    def __init__(self, description, targets, tokenizer, max_length):
+        self.description = description
+        self.targets = targets
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+    
+    def __len__(self):
+        return len(self.description)
+    
+    def __getitem__(self, item):
+        description = str(self.description[item])
+        target = self.targets[item]
+        
+        encoding = self.tokenizer.encode_plus(
+            description,
+            add_special_tokens=True,
+            max_length=self.max_length,
+            return_token_type_ids=False,
+            padding="max_length",
+            return_attention_mask=True,
+            return_tensors="pt",
+            truncation=True,
+        )
+        
+        return {
+            "article_text": description,
+            "input_ids": encoding["input_ids"].flatten(),
+            "attention_mask": encoding["attention_mask"].flatten(),
+            "targets": torch.tensor(target, dtype=torch.long),
+        }
+        
+```
+
+Previously, we introduced `tokenizer`. Simply put, word tokenization is the process of dividing a large sample of text into words. This is a fundamental requirement in natural language processing tasks where each word must be captured separately for later analysis. [Read about tokenization here](https://nlp.stanford.edu/IR-book/html/htmledition/tokenization-1.html)
+
+## 2- Loading data into dataloaders
+
+Still with the objective of making the code neat and easy to maintain, we will make a last transformation which consists in loading the data into `dataloaders`. To do this we will use *pytorch lightning*.
+For more details, please read the documentation of the lightning data module which explains each step of the process [here](https://pytorch-lightning.readthedocs.io/en/stable/api/pytorch_lightning.core.datamodule.html#pytorch_lightning.core.datamodule.LightningDataModule).
+
+```python
+import pytorch_lightning as pl
+import torch
+from transformers import BertTokenizer
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader
+```
+
+
+```python
+class BertDataModule(pl.LightningDataModule):
+    def __init__(self, **kwargs):
+        """
+        Initialization of inherited lightning data module
+        """
+        super(BertDataModule, self).__init__()
+        self.BERT_PRE_TRAINED_MODEL_NAME = "bert-base-uncased"
+        self.df_train = None
+        self.df_val = None
+        self.df_test = None
+        
+        self.train_data_loader = None
+        self.val_data_loader = None
+        self.test_data_loader = None
+        
+        self.MAX_LEN = 100
+        self.encoding = None
+        self.tokenizer = None
+    
+    def setup(self, stage=None):
+        """
+        Read the data, parse it and split the data into train, test, validation data
+
+        :param stage: Stage - training or testing
+        """
+        
+        num_samples = 80
+        df = (
+            transformed_data
+            .sample(num_samples)
+        )
+        
+        self.tokenizer = BertTokenizer.from_pretrained(self.BERT_PRE_TRAINED_MODEL_NAME)
+        
+        RANDOM_SEED = 0
+        np.random.seed(RANDOM_SEED)
+        torch.manual_seed(RANDOM_SEED)
+        
+        df_train, df_test = train_test_split(
+            df, test_size=0.3, random_state=RANDOM_SEED, stratify=df["label"]
+        )
+        
+        df_val, df_test = train_test_split(
+            df_test, test_size=0.5, random_state=RANDOM_SEED, stratify=df_test["label"]
+        )
+        
+        self.df_train, self.df_val, self.df_test = df_train, df_val, df_test
+    
+    def create_data_loader(self, df, tokenizer, max_len, batch_size=8):
+        """
+        Generic data loader function
+
+        :param df: Input dataframe
+        :param tokenizer: bert tokenizer
+        :param max_len: Max length of the claims datapoint
+        :param batch_size: Batch size for training
+
+        :return: Returns the constructed dataloader
+        """
+        dataset = PapersDataset(
+            description=df.description.to_numpy(),
+            targets=df.label.to_numpy(),
+            tokenizer=tokenizer,
+            max_length=max_len
+        )
+        
+        return DataLoader(
+            dataset, batch_size=batch_size, num_workers=0
+        )
+    
+    def train_dataloader(self):
+        """
+        :return: output - Train data loader for the given input
+        """
+        self.train_data_loader = self.create_data_loader(
+            self.df_train, self.tokenizer, self.MAX_LEN 
+        )
+        
+        return self.train_data_loader
+    
+    def val_dataloader(self):
+        """
+        :return: output - Validation data loader for the given input
+        """
+        self.val_data_loader = self.create_data_loader(
+            self.df_val, self.tokenizer, self.MAX_LEN
+        )
+        return self.val_data_loader
+
+    def test_dataloader(self):
+        """
+        :return: output - Test data loader for the given input
+        """
+        self.test_data_loader = self.create_data_loader(
+            self.df_test, self.tokenizer, self.MAX_LEN
+        )
+        return self.test_data_loader
+```
+
+
+## 3- Building the network
+In this step, we will build our classifier from a model learned from BERT.
+
+The configuration of a model with pytorch lightning is explained [here](https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html).
+
+
+```python
+import pytorch_lightning as pl
+import torch
+import torch.nn.functional as F
+from pytorch_lightning.callbacks import (
+    EarlyStopping,
+    ModelCheckpoint,
+    LearningRateMonitor,
+)
+from sklearn.metrics import accuracy_score
+from torch import nn
+from transformers import BertModel, AdamW
+
+class BertPapersClassifier(pl.LightningModule):
+    def __init__(self, **kwargs):
+        """
+        Initializes the network, optimizer and scheduler
+        """
+        super(BertPapersClassifier, self).__init__()
+        self.BERT_PRE_TRAINED_MODEL_NAME = "bert-base-uncased"
+        
+        self.bert_model = BertModel.from_pretrained(self.BERT_PRE_TRAINED_MODEL_NAME)
+    
+        
+        for param in self.bert_model.parameters():
+            param.requires_grad = False
+        
+        self.drop = nn.Dropout(p=0.2)
+        n_classes = 2
+        
+        self.fc1 = nn.Linear(self.bert_model.config.hidden_size, 512)
+        self.out = nn.Linear(512, n_classes)
+        
+        self.scheduler = None
+        self.optimizer = None
+    
+    def forward(self, input_ids, attention_mask):
+        """
+        :param input_ids: Input data
+        :param attention_maks: Attention mask value
+
+        :return: output - Accepted or not for the given papers snippet
+        """
+        output = self.bert_model(input_ids=input_ids, attention_mask=attention_mask)
+        output = F.relu(self.fc1(output.pooler_output))
+        output = self.drop(output)
+        output = self.out(output)
+        return output
+    
+    def training_step(self, train_batch, batch_idx):
+        """
+        Training the data as batches and returns training loss on each batch
+
+        :param train_batch Batch data
+        :param batch_idx: Batch indices
+
+        :return: output - Training loss
+        """
+        input_ids = train_batch["input_ids"].to(self.device)
+        attention_mask = train_batch["attention_mask"].to(self.device)
+        targets = train_batch["targets"].to(self.device)
+        
+        output = self.forward(input_ids, attention_mask)
+        loss = F.cross_entropy(output, targets)
+        self.log("train loss", loss)
+        return {"loss": loss}
+    
+    def test_step(self, test_batch, batch_idx):
+        """
+        Performs test and computes the accuracy of the model
+
+        :param test_batch: Batch data
+        :param batch_idx: Batch indices
+
+        :return: output - Testing accuracy
+        """
+        input_ids = test_batch["input_ids"].to(self.device)
+        attention_mask = test_batch["attention_mask"].to(self.device)
+        targets = test_batch["targets"].to(self.device)
+        
+        output = self.forward(input_ids, attention_mask)
+        _, y_hat = torch.max(output, dim=1)
+        test_acc = accuracy_score(y_hat.cpu(), targets.cpu())
+        
+        return {"test_acc": torch.tensor(test_acc)}
+    
+    def validation_step(self, val_batch, batch_idx):
+        """
+        Performs validation of data in batches
+
+        :param val_batch: Batch data
+        :param batch_idx: Batch indices
+
+        :return: output - valid step loss
+        """
+
+        input_ids = val_batch["input_ids"].to(self.device)
+        attention_mask = val_batch["attention_mask"].to(self.device)
+        targets = val_batch["targets"].to(self.device)
+        
+        output = self.forward(input_ids, attention_mask)
+        loss =  F.cross_entropy(output, targets)
+        
+        return {"val_step_loss": loss}
+    
+    def validation_epoch_end(self, outputs):
+        """
+        Computes average validation accuracy
+
+        :param outputs: outputs after every epoch end
+
+        :return: output - average valid loss
+        """
+        avg_loss = torch.stack([x["val_step_loss"] for x in outputs]).mean()
+        self.log("val_loss", avg_loss, sync_dist=True)
+
+    def test_epoch_end(self, outputs):
+        """
+        Computes average test accuracy score
+
+        :param outputs: outputs after every epoch end
+
+        :return: output - average test loss
+        """
+        avg_test_acc = torch.stack([x["test_acc"] for x in outputs]).mean()
+        self.log("avg_test_acc", avg_test_acc)
+    
+    def configure_optimizers(self):
+        """
+        Initializes the optimizer and learning rate scheduler
+
+        :return: output - Initialized optimizer and scheduler
+        """
+        self.optimizer = AdamW(self.parameters(), lr=0.001)
+        self.scheduler = {
+            "scheduler": torch.optim.lr_scheduler.ReduceLROnPlateau(
+                self.optimizer,
+                mode="min",
+                factor=0.2,
+                patience=2,
+                min_lr=1e-6,
+                verbose=True
+            ),
+            "monitor": "val_loss",
+        }
+        return [self.optimizer], [self.scheduler]
+```
+
+## 4- Training
+
+```python
+import os
+from pytorch_lightning import Trainer
+
+torch.cuda.empty_cache()
+
+data_module = BertDataModule(accelerator="gpu")
+data_module.setup(stage="fit")
+
+b_model = BertPapersClassifier()
+early_stopping = EarlyStopping(monitor="val_loss", mode="min", verbose=True)
+
+checkpoint_callback = ModelCheckpoint(
+        dirpath=os.getcwd(),
+        save_top_k=1,
+        verbose=True,
+        monitor="val_loss",
+        
+        mode="min",
+    )
+lr_logger = LearningRateMonitor()
+
+trainer = pl.Trainer(
+    max_epochs=10, gpus=1, accelerator="gpu",
+    callbacks=[lr_logger, early_stopping, checkpoint_callback], checkpoint_callback=True,
+)
+
+trainer.fit(b_model, data_module)
+trainer.test(datamodule=data_module)
+
+torch.save(b_model.state_dict(), "bert_model_dict.pt")
+```
+
+    --------------------------------------------------------------------------------
+    DATALOADER:0 TEST RESULTS
+    {'avg_test_acc': 0.6875}
+    --------------------------------------------------------------------------------
+
+## 5- Test
+
+```python
+import torch
+
+article = "Sparse Quantized Spectral Clustering - Given a large data matrix, sparsifying, quantizing, and/or performing other entry-wise nonlinear operations can have numerous benefits, ranging from speeding up iterative algorithms for core numerical linear algebra problems to providing nonlinear filters to design state-of-the-art neural network models. Here, we exploit tools from random matrix theory to make precise statements about how the eigenspectrum of a matrix changes under such nonlinear transformations. In particular, we show that very little change occurs in the informative eigenstructure, even under drastic sparsification/quantization, and consequently that very little downstream performance loss occurs when working with very aggressively sparsified or quantized spectral clustering problems.\
+We illustrate how these results depend on the nonlinearity, we characterize a phase transition beyond which spectral clustering becomes possible, and we show when such nonlinear transformations can introduce spurious non-informative eigenvectors."
+#original label = 1 : accepted
+
+# Predict on a Pandas DataFrame.
+import pandas as pd
+
+model = BertPapersClassifier()
+
+model.load_state_dict(torch.load("bert_model_dict.pt"))
+model.eval()
+
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+
+inputs = tokenizer(article, padding=True)
+
+input_ids = torch.tensor(inputs["input_ids"]).unsqueeze(0)
+attention_mask = torch.tensor(inputs["attention_mask"]).unsqueeze(0)
+
+
+# print(model)
+# print(input_ids)
+
+out = model(input_ids, attention_mask)
+# print(out)
+print(torch.max(out.data, 1))
+print(torch.max(out.data, 1).indices==torch.tensor([1]))
+```
+
+    tensor([[-0.2612, -0.0729]], grad_fn=<AddmmBackward0>)
+    torch.return_types.max(
+    values=tensor([-0.0729]),
+    indices=tensor([1]))
+    tensor([True])
+
+Taking the example of [this item](https://openreview.net/forum?id=pBqLS-7KYAF) which was not in our data, our model returns an acceptance 😁:
+
+## Endnote
+
+The whole code is available [here](https://github.com/Godwinh19/Papers-Dataset/) (in french).
+Our used dataset is very small, we will increase it but anyway our model performs its function. 
+In a next article, we will see how we can monitor our models, put in production the best performing ones while having the best parameters.
+
+Cheers ☕!

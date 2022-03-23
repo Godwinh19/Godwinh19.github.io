@@ -24,6 +24,5 @@ See the [blog archives](blog.md) for a more complete list.
 :maxdepth: 2
 :hidden:
 about
-activities
 blog
 ```
