@@ -48,7 +48,8 @@ Il existe plusieurs façons de mettre en œuvre une couche d'auto-attention, mai
 - Mise à jour de l'intégration des jetons. Une fois les poids d'attention calculés, nous les multiplions par le vecteur de valeurs (`value`) afin d'obtenir une représentation actualisée pour l'incorporation: ![update weights](https://latex.codecogs.com/svg.image?x_i'&space;=&space;\sum_{j}w_{ji}v_j)
 
 En premier temps, nous allons extraire les tokens de notre texte:
-*PS:* Pour plus de facilité nous travaillerons avec les hyper-paramètres utilisés dans l'architecture **BERT**. Retrouvez le model de Bert sur huggingface [ici](https://huggingface.co/bert-base-uncased) et le papier [ici](https://arxiv.org/abs/1810.04805)
+
+***PS:*** Pour plus de facilité nous travaillerons avec les hyper-paramètres utilisés dans l'architecture **BERT**. Retrouvez le model de Bert sur huggingface [ici](https://huggingface.co/bert-base-uncased) et le papier [ici](https://arxiv.org/abs/1810.04805)
 
 
 ```python
