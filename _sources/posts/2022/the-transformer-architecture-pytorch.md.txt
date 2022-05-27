@@ -13,7 +13,9 @@ category: Deep Learning
 </figure>
 
 **Qu'est ce qu'un transformer ?:**
-Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en suivant les relations dans les données séquentielles comme les mots de cette phrase. Dans la version originale de leur papier [Attention Is All You Need](https://arxiv.org/abs/1706.03762), les auteurs définisse le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d'attention, exemptée entièrement de récurrence ou de convolution.
+Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en 
+suivant les relations dans les données séquentielles comme les mots de cette phrase. 
+Dans la version originale de leur papier [Attention Is All You Need](https://arxiv.org/abs/1706.03762), les auteurs définissent le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d'attention, exemptée entièrement de récurrence ou de convolution.
 
 **Applications**
 

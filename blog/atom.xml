@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>https://godwinh19.github.io/</id>
   <title>Godwin H</title>
-  <updated>2022-05-27T16:18:26.171557+00:00</updated>
+  <updated>2022-05-27T17:37:50.528802+00:00</updated>
   <link href="https://godwinh19.github.io/"/>
   <link href="https://godwinh19.github.io/blog/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.org/" version="0.10.23">ABlog</generator>
@@ -29,14 +29,18 @@
     <updated>2022-05-26T00:00:00+01:00</updated>
     <content type="html">&lt;div class="ablog-post-excerpt docutils container"&gt;
 &lt;p&gt;&lt;strong&gt;Qu’est ce qu’un transformer ?:&lt;/strong&gt;
-Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en suivant les relations dans les données séquentielles comme les mots de cette phrase. Dans la version originale de leur papier &lt;a class="reference external" href="https://arxiv.org/abs/1706.03762"&gt;Attention Is All You Need&lt;/a&gt;, les auteurs définisse le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d’attention, exemptée entièrement de récurrence ou de convolution.&lt;/p&gt;
+Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en
+suivant les relations dans les données séquentielles comme les mots de cette phrase.
+Dans la version originale de leur papier &lt;a class="reference external" href="https://arxiv.org/abs/1706.03762"&gt;Attention Is All You Need&lt;/a&gt;, les auteurs définissent le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d’attention, exemptée entièrement de récurrence ou de convolution.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Applications&lt;/strong&gt;&lt;/p&gt;
 &lt;img alt="process" src="https://latex.codecogs.com/svg.image?%5Cmathbf%7BX%7D&amp;amp;space%3B%5CLongrightarrow&amp;amp;space%3B%5Cmathbf%7BEncodeur%7D&amp;amp;space%3B%5CLongrightarrow&amp;amp;space%3B%5Cmathbf%7Bcontexte%7D&amp;amp;space%3B%5CLongrightarrow&amp;amp;space%3B%5Cmathbf%7BDecodeur%7D&amp;amp;space%3B%5CLongrightarrow&amp;amp;space%3B%5Cmathbf%7BY%7D" /&gt;
 &lt;/div&gt;
 </content>
     <link href="https://godwinh19.github.io/posts/2022/the-transformer-architecture-pytorch/" rel="alternate"/>
     <summary>Qu’est ce qu’un transformer ?:
-Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en suivant les relations dans les données séquentielles comme les mots de cette phrase. Dans la version originale de leur papier Attention Is All You Need, les auteurs définisse le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d’attention, exemptée entièrement de récurrence ou de convolution.Applicationsprocess</summary>
+Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en
+suivant les relations dans les données séquentielles comme les mots de cette phrase.
+Dans la version originale de leur papier Attention Is All You Need, les auteurs définissent le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d’attention, exemptée entièrement de récurrence ou de convolution.Applicationsprocess</summary>
     <category term="deeplearning" label="deep learning"/>
     <category term="nlp" label="nlp"/>
     <category term="transformers" label="transformers"/>
