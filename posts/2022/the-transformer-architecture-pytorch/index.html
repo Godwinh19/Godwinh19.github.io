@@ -378,7 +378,7 @@ Dans la version originale de leur papier <a class="reference external" href="htt
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_ckpt</span> <span class="o">=</span> <span class="s2">&quot;bert-base-uncased&quot;</span>
 <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_ckpt</span><span class="p">)</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;learn power of &quot;&quot;time flies like an arrow&quot;</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;time flies like an arrow&quot;</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

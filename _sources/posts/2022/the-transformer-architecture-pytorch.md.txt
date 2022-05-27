@@ -62,7 +62,7 @@ from transformers import AutoTokenizer
 ```python
 model_ckpt = "bert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
-text = "learn power of ""time flies like an arrow"
+text = "time flies like an arrow"
 ```
 
 
