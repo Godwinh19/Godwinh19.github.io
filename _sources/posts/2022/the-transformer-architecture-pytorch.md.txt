@@ -477,7 +477,7 @@ Ceci marque la fin l'encodeur !!.
 
 ## Endnote
 
-The whole code is available [here](https://github.com/Godwinh19/Papers-Dataset/) (in french).
+Le notebook est disponible [ici](https://github.com/Godwinh19/ds-portfolio/blob/main/transformer_architecture.ipynb).
 Cheers ☕!
 
 # Ressources
