@@ -471,9 +471,11 @@ encoder_classifier(inputs.input_ids).shape
 
 
 
-Nous avons défini pour notre tâche de classification *3 catégories*, les données sont envoyées vers la sous couche de classification après passage de l'encodeur et un dropout appliqué.
+Nous avons défini pour notre tâche de classification *3 catégories*, les données sont
+envoyées vers la sous-couche de classification après passage de l'encodeur et du 
+dropout.
 
-Ceci marque la fin l'encodeur !!.
+Ceci marque la fin de l'encodeur !!.
 
 ## Endnote
 
