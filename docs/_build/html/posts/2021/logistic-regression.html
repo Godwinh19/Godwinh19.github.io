@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>What to know about Logistic Regression ? &#8212; Godwin H</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nav.css?v=9d3b4cd0" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'posts/2021/logistic-regression';</script>
+    <link rel="canonical" href="https://godwinh19.github.io/posts/2021/logistic-regression.html" />
+    <link rel="icon" href="../../_static/ico.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+<link
+  rel="alternate"
+  type="application/atom+xml"
+  href="../../blog/atom.xml"
+  title="All Posts"
+/>
+
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Godwin H</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about/index.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blog/index.html">
+    All Posts
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/godwinh19" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://linkedin.com/in/godwin-houdji" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/GodwinHoudji" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about/index.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blog/index.html">
+    All Posts
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/godwinh19" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://linkedin.com/in/godwin-houdji" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/GodwinHoudji" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">What to...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+<section class="tex2jax_ignore mathjax_ignore" id="what-to-know-about-logistic-regression">
+<h1>What to know about Logistic Regression ?<a class="headerlink" href="#what-to-know-about-logistic-regression" title="Link to this heading">#</a></h1>
+<p>When it comes to make machine learning (ML) classification task, there is Logistic Regression which make compromise between performance and results. Through this article, we’ll deep into the different steps to make a ML algorithm, how Logistic Regression work and of course an explanation of Gradient descent.</p>
+<hr class="docutils" />
+<section id="ml-algorithms-steps">
+<h2>ML algorithms steps<a class="headerlink" href="#ml-algorithms-steps" title="Link to this heading">#</a></h2>
+<p>To go from raw data to an ML model, we mainly go through 3 main stages:</p>
+<ul class="simple">
+<li><p>the definition of a hypothesis function</p></li>
+<li><p>the development of a cost function</p></li>
+<li><p>minimization of the cost function</p></li>
+</ul>
+<section id="the-hypothesis-function">
+<h3>The hypothesis function<a class="headerlink" href="#the-hypothesis-function" title="Link to this heading">#</a></h3>
+<p>We assume that we have information on the income of clients <span class="math notranslate nohighlight">\((X)\)</span> in an insurance company. Based on the client’s income, he receives targeted advertisements <span class="math notranslate nohighlight">\((Y)\)</span> to subscribe to the services.</p>
+<p>The objective is to find the best function which will have the role of approximating the output values <span class="math notranslate nohighlight">\(Y\)</span>, in other word make good suggestion for clients.</p>
+<div class="math notranslate nohighlight">
+\[
+\textit{Input } X \overset{\text{hypothesis function } h}{\Longrightarrow} Y
+\]</div>
+</section>
+<hr class="docutils" />
+<section id="the-cost-function">
+<h3>The cost function<a class="headerlink" href="#the-cost-function" title="Link to this heading">#</a></h3>
+<p>Because we are approximating the output values, it is obvious that we have errors. Indeed, each output value <span class="math notranslate nohighlight">\( y_i \)</span> of our hypothesis function is more or less close to the real value.<br />
+An example to calculate the error is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\big(h(x_i) - y_i\big)^2
+\]</div>
+<p>The cost function will therefore be the average of the unit errors of the output values of the hypothesis function:</p>
+<div class="math notranslate nohighlight">
+\[
+J(\theta) = \frac{1}{m} \sum_{i=1}^{m} j\big(h(x_i), y_i\big)
+\]</div>
+<p>with <span class="math notranslate nohighlight">\( m \)</span>: number of outputs<br />
+and <span class="math notranslate nohighlight">\( \theta \)</span>: the vector of the parameters.</p>
+</section>
+<hr class="docutils" />
+<section id="the-minimization-of-the-cost-function">
+<h3>The minimization of the cost function<a class="headerlink" href="#the-minimization-of-the-cost-function" title="Link to this heading">#</a></h3>
+<p>The objective is to find the parameters of the hypothesis function that best approximates the outputs. For this, we will retain those which produce a minimum value of the cost function. A widely used technique is gradient descent.</p>
+<p>Gradient descent (GD) is an iterative method whose principle is quite intuitive: what would a ball dropped high enough in a bowl do? She would take the best slope at any time to the bottom of the bowl.</p>
+<p>Steps / mathematical formula for gradient descent: Given a two features, how we compute GD ?</p>
+<ol class="arabic simple">
+<li><p>Iteration 0: initialization of couple <span class="math notranslate nohighlight">\( (\theta_0, \theta_1) \)</span></p></li>
+<li><p>Iterate until convergence</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\Theta_j := \Theta_j - \alpha \frac{\partial J(\Theta_0, \Theta_1)}{\partial \Theta_j} 
+\quad \text{for } i = 1 \text{ and } 0
+\]</div>
+<p><span class="math notranslate nohighlight">\( \alpha \)</span> being the “learning rate” which physically represents the speed at which we want to complete our iterations.<br />
+The larger <span class="math notranslate nohighlight">\( \alpha \)</span>, the greater the step between two iterations, but the greater the probability of going beyond the minimum or even of diverging; the opposite slows down the training of our algorithm.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="logistic-regression">
+<h2>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Link to this heading">#</a></h2>
+<p>Logistic regression (LR) is a classic in classification. It can be seen as an improvement of linear regression. <em>In this post we’ll use an example of binary classification</em></p>
+<section id="hypothesis-function">
+<h3>Hypothesis function<a class="headerlink" href="#hypothesis-function" title="Link to this heading">#</a></h3>
+<p>Theoretically, we could use:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+LR(x) = 
+\begin{cases}
+0, &amp; h(x) &lt; 0.5 \\
+1, &amp; h(x) \geq 0.5
+\end{cases}
+\end{split}\]</div>
+<p>However, this way is not optimal. Thus in LR, the function <span class="math notranslate nohighlight">\( h \)</span> must respect the following condition:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+0 \leq h(x) \leq 1 \\
+h(x) = P(y = 1 \mid x, \theta) \\
+\theta \text{ the vector of the parameters}
+\end{split}\]</div>
+<p>To compute this formula above, we refer to mathematical functions such as sigmoid functions: Gompertz curve, the distribution function of the reduced centered normal law, the distribution function of the logistic law, the logistic function. The latter is an evolution of the distribution function of the logistic law and is widely used.<br />
+The logistic function is:</p>
+<div class="math notranslate nohighlight">
+\[
+g(t) = \frac{1}{1 + e^{-t}}
+\]</div>
+<p>For the observation <span class="math notranslate nohighlight">\( x_i \)</span>, the probability of predicting a 1 given <span class="math notranslate nohighlight">\( x_i \)</span> and <span class="math notranslate nohighlight">\( \theta \)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+g(X_i, \theta) = g(\theta_0 + \theta_1 X_{i1} + \theta_2 X_{i2} + \dots + \theta_m X_{im})
+\]</div>
+<p>So to take decision:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+LR(x) = 
+\begin{cases}
+1, &amp; g(x; \theta) \geq 0.5 \\
+0, &amp; g(x; \theta) &lt; 0.5
+\end{cases}
+\end{split}\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">LogisticRegression</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># get number of independent variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>  <span class="c1"># initialization of weights to 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># set starting value/bias to 0.5</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        x: data to predict</span>
+<span class="sd">        return predictions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">expit</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>  <span class="c1"># Logistic sigmoid function</span>
+        <span class="k">return</span> <span class="n">p</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>The cost function<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>A function that strongly penalizes false positives and false negatives:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+j(h(x), y) =
+\begin{cases}
+-\log(h(x)), &amp; y = 1 \\
+-\log(1 - h(x)), &amp; y = 0
+\end{cases}
+\quad \Longrightarrow \quad 
+- y \log(h(x)) - (1 - y) \log(1 - h(x))
+\end{split}\]</div>
+<p>The overall cost function will be:</p>
+<div class="math notranslate nohighlight">
+\[
+J(\theta) = \frac{1}{m} \sum_{i=1}^{m} \big[ y \log(h(x)) + (1 - y) \log(1 - h(x)) \big]
+\]</div>
+<p>The code of the cost function can be write as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    cost function</span>
+<span class="sd">    x: Input data</span>
+<span class="sd">    y: output data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">))</span> <span class="c1">#cross entropy coss function</span>
+    <span class="k">return</span> <span class="n">cost</span>
+</pre></div>
+</div>
+</section>
+<section id="minimization-of-cost-function">
+<h3>Minimization of cost function<a class="headerlink" href="#minimization-of-cost-function" title="Link to this heading">#</a></h3>
+<p>Using python, let’s implement our cost function for Logistic Regression as we discussed at cost function part.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="c1">#Partial Derivation</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">p</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#dJ/dw</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">y</span><span class="p">)</span>             <span class="c1">#dJ/db</span>
+    
+    <span class="c1">#We update the values of w and b</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">-</span> <span class="n">dw</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="n">db</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span>
+</pre></div>
+</div>
+<p>Finally, to train our function, we’ll proceed like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    x: Input data</span>
+<span class="sd">    y: output data</span>
+<span class="sd">    epochs: Number of epochs</span>
+<span class="sd">    We create differents vectors in order to store all weights, bias, cost and predicted values (for connection lines)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">epochs</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Biases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">epochs</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">epochs</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Cl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">epochs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Weights</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Biases</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Costs</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cl</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="c1">#flatten to get a vector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_descent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="c1">#to update parameters values</span>
+</pre></div>
+</div>
+<p>That’s all! I hope you found this article helpful. If any questions arise or you’ve noticed any mistakes, please leave a comment/issue.</p>
+<p>You can find the complete GitHub code <a href="https://github.com/Godwinh19/ds-portfolio/tree/main/LogisticRegression" target="_blank" rel="noopener">Here</a></p>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><a href="https://towardsdatascience.com/animations-of-logistic-regression-with-python" target="_blank" rel="noopener">https://towardsdatascience.com/animations-of-logistic-regression-with-python</a></p></li>
+<li><p><a href="https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html" target="_blank" rel="noopener">https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html</a></p></li>
+<li><p>Eric Biernat, Michel Lutz, “Data Science : fondamentaux et études de cas”</p></li>
+</ol>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+  
+  
+
+
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+    
+    
+    <a href="empirical-mode-decomposition.html">
+      <span>Empirical Mode Decomposition</span>
+      
+      <i class="fa fa-arrow-circle-right" ></i>
+      
+    </a>
+    
+  </span>
+</div>
+
+  
+  
+  <div class="section ablog__comments">
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname = "disqus_qfyj9nwrcT";
+      var disqus_identifier = "/posts/2021/logistic-regression/";
+      var disqus_title = "What to know about Logistic Regression ?";
+      var disqus_url = "https://godwinh19.github.io/posts/2021/logistic-regression";
+
+      (function () {
+        var dsq = document.createElement("script");
+        dsq.type = "text/javascript";
+        dsq.async = true;
+        dsq.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+        (
+          document.getElementsByTagName("head")[0] ||
+          document.getElementsByTagName("body")[0]
+        ).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+      Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript">
+        comments powered by Disqus.</a ></noscript >
+    <a href="https://disqus.com" class="dsq-brlink">
+      comments powered by <span class="logo-disqus">Disqus</span>
+    </a >
+  </div>
+  
+</div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ml-algorithms-steps">ML algorithms steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hypothesis-function">The hypothesis function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-cost-function">The cost function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-minimization-of-the-cost-function">The minimization of the cost function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">Logistic Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-function">Hypothesis function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">The cost function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimization-of-cost-function">Minimization of cost function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p style="text-align:center; font-size:0.9rem; color:#666;">
+  © Copyright 2022, Godwin H.
+  <br>
+  Powered by <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+  and the <a href="https://pydata-sphinx-theme.readthedocs.io/" target="_blank" rel="noopener">PyData Sphinx Theme</a>.
+  <br>
+  <a href="https://github.com/godwinh19" target="_blank">GitHub</a> ·
+  <a href="/about">About</a> ·
+  <a href="/blog">Blog</a>
+</p>
+
+<!--2022 Godwin Houdji — Built with ❤️, data, and too much ☕--></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

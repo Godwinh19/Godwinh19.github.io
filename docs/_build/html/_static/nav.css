@@ -1,0 +1,40 @@
+/* subtle sticky bar + thin divider */
+.bd-header { position: sticky; top: 0; z-index: 1000; background: var(--pst-color-background); }
+.bd-header + .bd-header-article { border-bottom: 1px solid var(--pst-color-border); }
+
+/* center menu items and tighten spacing */
+.bd-header .navbar .navbar-nav { gap: 1.25rem; }
+
+/* clean link style */
+.bd-header .navbar .nav-link {
+  padding: .35rem .3rem;
+  color: var(--pst-color-text-muted);
+  transition: color .15s ease;
+}
+.bd-header .navbar .nav-link:hover,
+.bd-header .navbar .nav-link[aria-current="page"] {
+  color: var(--pst-color-primary);
+}
+
+/* search field: slim + unobtrusive */
+button.search-button-field, .bd-search .search-button__wrapper {
+  border-radius: 999px !important;
+  padding: .25rem .6rem !important;
+  border: 1px solid var(--pst-color-border);
+  box-shadow: none !important;
+}
+
+/* icon buttons on right */
+.navbar .navbar-end-items .navbar-icon-links a {
+  padding: .25rem;
+  border-radius: 8px;
+}
+.navbar .navbar-end-items .navbar-icon-links a:hover {
+  background: var(--pst-color-on-surface);
+  opacity: .08;
+}
+
+/* reduce header height a touch on desktop */
+@media (min-width: 992px){
+  .bd-header .navbar { padding-top: .4rem; padding-bottom: .4rem; }
+}

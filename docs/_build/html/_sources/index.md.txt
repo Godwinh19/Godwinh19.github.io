@@ -1,0 +1,26 @@
+# Godwin Houdji - about me
+
+Hey there 👋🏾
+
+I’m a computer science engineer and currently a full-time quantitative researcher.
+
+I'm exploring how data, language, and machine learning can drive real-world impact
+from building NLP tools to designing experiments that measure change.
+
+Here, I’m sharing my learning along the way.
+
+## Recent posts
+See the [blog archives](blog/index.md) for a more complete list.
+
+```{postlist}
+:date: "%Y-%m-%d"
+:excerpts:
+:tags: 3
+:format: "{date} - {title}"
+```
+
+```{toctree}
+:hidden:
+:maxdepth: 2
+about/index
+blog/index

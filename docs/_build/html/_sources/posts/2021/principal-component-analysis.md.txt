@@ -1,0 +1,199 @@
+---
+blogpost: true
+date: May 14, 2021
+tags: machine-learning, pca, dimensionality-reduction, unsupervised-learning
+category: Machine Learning
+---
+
+# Principal Component Analysis
+
+## Definition
+
+The Principal Component Analysis (PCA) is a dimension reduction technique widely used. Given a dataset with $n$ features, 
+the aim is to have $k$ feature with $k\le n$ so as the features retain most of the variation present in all of the original variables.
+
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+
+<div class="mermaid">
+flowchart LR
+    A[Start with covariance matrix] --> B[Compute eigenvalues and eigenvectors] --> C[Capture principal components]
+</div>
+<br/>
+Let's deep into each process. We'll use this example of dataset to explain the different steps:
+
+| f1  |  f2  |  f3  |  y  |
+|-----|------|------|-----|
+| a1  |  b1  |  c1  |  y1 |
+| a2  |  b2  |  c2  |  y2 |
+| a3  |  b3  |  c3  |  y3 |
+
+We assume that $a_i, b_i, c_i$ are numeric and $y$ is the output
+
+---
+
+## Covariance matrix
+
+Our previous dataset could be written as matrix:
+
+$$
+data = 
+\begin{bmatrix}
+a_1 & b_1 & c_1 \\
+a_2 & b_2 & c_2 \\
+a_3 & b_3 & c_3
+\end{bmatrix}
+$$
+
+Each row represents an observation, and each column a feature.
+
+
+To compute the covariance, we need the mean of each column (relative to a feature):
+
+$$
+\hat{f}_i = \frac{1}{N}\sum_{i=1}^{N} f_i
+$$
+
+with $N$ the number of observations.
+
+Now the covariance for each feature $f_i$ is equal to:
+
+$$
+\mathrm{cov}(X, Y) = \frac{1}{N - 1}\sum_{i=1}^{N}(X_i - \hat{X})(Y_i - \hat{Y})
+$$
+
+Following covariance rules $ \mathrm{cov}(a, b) = \mathrm{cov}(b, a) $, let's rewrite our original matrix:
+
+$$
+\mathrm{cov}_{data} =
+\begin{bmatrix}
+\mathrm{cov}(f_1, f_1) & \mathrm{cov}(f_1, f_2) & \mathrm{cov}(f_1, f_3) \\
+\mathrm{cov}(f_1, f_2) & \mathrm{cov}(f_2, f_2) & \mathrm{cov}(f_2, f_3) \\
+\mathrm{cov}(f_1, f_3) & \mathrm{cov}(f_2, f_3) & \mathrm{cov}(f_3, f_3)
+\end{bmatrix}
+$$
+
+> **Note:** The covariance values on the diagonal represent the variance of each feature.
+
+- $\mathbf{cov(x_1, x_2)}$ > 0 if $\mathbf{x_1}$ rises and $\mathbf{x_2}$ rises too  
+- $\mathbf{cov(x_1, x_2)}$ < 0 if $\mathbf{x_1}$ rises and $\mathbf{x_2}$ decreases  
+- $\mathbf{cov(x_1, x_2)}$ = 0 if $\mathbf{x_1}$ and $\mathbf{x_2}$ are independent
+
+
+---
+
+## Compute eigenvalues and eigenvectors
+
+Let $\mathbf{A} \in \mathbb{R}^{n \times n}$ be a square matrix. Then $\lambda \in \mathbb{R}$ is an eigenvalue of $ \mathbf{A} $;
+
+$ \mathbf{x} \in \mathbb{R}^n - \{\mathbf{0}\} $ is the corresponding eigenvector of $ \mathbf{A} $ if
+
+$$
+\mathbf{A}\mathbf{x} = \lambda \mathbf{x} \quad (\text{Eigenvalue equation})
+$$
+
+The eigenvalues of $ \mathbf{A} $ are roots of the characteristic equation:
+
+$$
+\det(\mathbf{A} - \lambda \mathbf{I}) = 0
+$$
+
+with $ \mathbf{I} $ the identity matrix corresponding to $ \mathbf{A} $:
+
+$$
+\det(\mathbf{A} - \lambda \mathbf{I}) = 
+\det
+\begin{bmatrix}
+a_1 & b_1 & c_1 \\
+a_2 & b_2 & c_2 \\
+a_3 & b_3 & c_3
+\end{bmatrix}
+- \lambda 
+\det
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+= 
+\det
+\begin{bmatrix}
+a_1 - \lambda & b_1 & c_1 \\
+a_2 & b_2 - \lambda & c_2 \\
+a_3 & b_3 & c_3 - \lambda
+\end{bmatrix}
+$$
+
+Resolving this equation (using Sarrus's rule), we will have an equation like:
+
+$$
+a\lambda^3 + b\lambda^2 + c\lambda + d = 0
+$$
+
+After solving this equation we got our eigenvalues $ \lambda_1, \lambda_2, \lambda_3 $. Let's assume that:
+
+$$
+\lambda_1 > \lambda_2 > \lambda_3 \tag{a}
+$$
+
+Knowing the eigenvalues, we can then compute eigenvectors by solving the previous equation:
+
+$$
+\mathbf{A}\mathbf{x} = \lambda \mathbf{x}
+$$
+
+That lead us to three different eigenvectors (in our case because data has 3 features):
+
+$$
+\mathbf{v}_1 = 
+\begin{bmatrix}
+v_{11} \\
+v_{12} \\
+v_{13}
+\end{bmatrix}, \quad
+\mathbf{v}_2 =
+\begin{bmatrix}
+v_{21} \\
+v_{22} \\
+v_{23}
+\end{bmatrix}, \quad
+\mathbf{v}_3 =
+\begin{bmatrix}
+v_{31} \\
+v_{32} \\
+v_{33}
+\end{bmatrix}
+$$
+
+$ \mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3 $ respectively the eigenvector of $ \lambda_1, \lambda_2, \lambda_3 $.
+
+
+---
+
+## Capture the principal components
+
+Now the final part is to choose the number $ k \le n $ of principal component to retain.
+
+Let's choose $ k = 2 $ in our case. Because of assumption in (a), we'll retain the correspondent eigenvectors for $ \lambda_1 $ and $ \lambda_2 $: $ v1 $ and $ v2 $
+
+The $ n \times k $ matrix $ \mathbf{W} $ can be written as:
+
+$$
+\mathbf{W} = 
+\begin{bmatrix}
+v_{11} & v_{21} \\
+v_{12} & v_{22} \\
+v_{13} & v_{23}
+\end{bmatrix}
+$$
+
+We use the $ 3 \times 2 $ dimensional matrix $ \mathbf{W} $ that we just computed to transform our samples onto the new subspace via the equation:
+
+$$
+y = \mathbf{W}^T \times data^T
+$$
+
+And we've done. ☕!
+

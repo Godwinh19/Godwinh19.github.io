@@ -1,0 +1,17 @@
+# All Posts
+
+### Tags
+```{tagcloud}
+:max_tags: 30
+```
+
+### Archives
+```{archives}
+:collapse:
+```
+
+```{postlist}
+:date: "%d %b %Y"
+:excerpts:
+:format: "{date} - {title}"
+```

@@ -1,0 +1,761 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Principal Component Analysis &#8212; Godwin H</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nav.css?v=9d3b4cd0" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'posts/2021/principal-component-analysis';</script>
+    <link rel="canonical" href="https://godwinh19.github.io/posts/2021/principal-component-analysis.html" />
+    <link rel="icon" href="../../_static/ico.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+<link
+  rel="alternate"
+  type="application/atom+xml"
+  href="../../blog/atom.xml"
+  title="All Posts"
+/>
+
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Godwin H</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about/index.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blog/index.html">
+    All Posts
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/godwinh19" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://linkedin.com/in/godwin-houdji" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/GodwinHoudji" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about/index.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blog/index.html">
+    All Posts
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/godwinh19" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://linkedin.com/in/godwin-houdji" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/GodwinHoudji" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Principal...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+<section class="tex2jax_ignore mathjax_ignore" id="principal-component-analysis">
+<h1>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Link to this heading">#</a></h1>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h2>
+<p>The Principal Component Analysis (PCA) is a dimension reduction technique widely used. Given a dataset with <span class="math notranslate nohighlight">\(n\)</span> features,
+the aim is to have <span class="math notranslate nohighlight">\(k\)</span> feature with <span class="math notranslate nohighlight">\(k\le n\)</span> so as the features retain most of the variation present in all of the original variables.</p>
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+<div class="mermaid">
+flowchart LR
+    A[Start with covariance matrix] --> B[Compute eigenvalues and eigenvectors] --> C[Capture principal components]
+</div>
+<br/>
+Let's deep into each process. We'll use this example of dataset to explain the different steps:
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>f1</p></th>
+<th class="head"><p>f2</p></th>
+<th class="head"><p>f3</p></th>
+<th class="head"><p>y</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>a1</p></td>
+<td><p>b1</p></td>
+<td><p>c1</p></td>
+<td><p>y1</p></td>
+</tr>
+<tr class="row-odd"><td><p>a2</p></td>
+<td><p>b2</p></td>
+<td><p>c2</p></td>
+<td><p>y2</p></td>
+</tr>
+<tr class="row-even"><td><p>a3</p></td>
+<td><p>b3</p></td>
+<td><p>c3</p></td>
+<td><p>y3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We assume that <span class="math notranslate nohighlight">\(a_i, b_i, c_i\)</span> are numeric and <span class="math notranslate nohighlight">\(y\)</span> is the output</p>
+</section>
+<hr class="docutils" />
+<section id="covariance-matrix">
+<h2>Covariance matrix<a class="headerlink" href="#covariance-matrix" title="Link to this heading">#</a></h2>
+<p>Our previous dataset could be written as matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+data = 
+\begin{bmatrix}
+a_1 &amp; b_1 &amp; c_1 \\
+a_2 &amp; b_2 &amp; c_2 \\
+a_3 &amp; b_3 &amp; c_3
+\end{bmatrix}
+\end{split}\]</div>
+<p>Each row represents an observation, and each column a feature.</p>
+<p>To compute the covariance, we need the mean of each column (relative to a feature):</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{f}_i = \frac{1}{N}\sum_{i=1}^{N} f_i
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(N\)</span> the number of observations.</p>
+<p>Now the covariance for each feature <span class="math notranslate nohighlight">\(f_i\)</span> is equal to:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{cov}(X, Y) = \frac{1}{N - 1}\sum_{i=1}^{N}(X_i - \hat{X})(Y_i - \hat{Y})
+\]</div>
+<p>Following covariance rules <span class="math notranslate nohighlight">\( \mathrm{cov}(a, b) = \mathrm{cov}(b, a) \)</span>, let’s rewrite our original matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathrm{cov}_{data} =
+\begin{bmatrix}
+\mathrm{cov}(f_1, f_1) &amp; \mathrm{cov}(f_1, f_2) &amp; \mathrm{cov}(f_1, f_3) \\
+\mathrm{cov}(f_1, f_2) &amp; \mathrm{cov}(f_2, f_2) &amp; \mathrm{cov}(f_2, f_3) \\
+\mathrm{cov}(f_1, f_3) &amp; \mathrm{cov}(f_2, f_3) &amp; \mathrm{cov}(f_3, f_3)
+\end{bmatrix}
+\end{split}\]</div>
+<blockquote>
+<div><p><strong>Note:</strong> The covariance values on the diagonal represent the variance of each feature.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{cov(x_1, x_2)}\)</span> &gt; 0 if <span class="math notranslate nohighlight">\(\mathbf{x_1}\)</span> rises and <span class="math notranslate nohighlight">\(\mathbf{x_2}\)</span> rises too</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{cov(x_1, x_2)}\)</span> &lt; 0 if <span class="math notranslate nohighlight">\(\mathbf{x_1}\)</span> rises and <span class="math notranslate nohighlight">\(\mathbf{x_2}\)</span> decreases</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{cov(x_1, x_2)}\)</span> = 0 if <span class="math notranslate nohighlight">\(\mathbf{x_1}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x_2}\)</span> are independent</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="compute-eigenvalues-and-eigenvectors">
+<h2>Compute eigenvalues and eigenvectors<a class="headerlink" href="#compute-eigenvalues-and-eigenvectors" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{A} \in \mathbb{R}^{n \times n}\)</span> be a square matrix. Then <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span> is an eigenvalue of <span class="math notranslate nohighlight">\( \mathbf{A} \)</span>;</p>
+<p><span class="math notranslate nohighlight">\( \mathbf{x} \in \mathbb{R}^n - \{\mathbf{0}\} \)</span> is the corresponding eigenvector of <span class="math notranslate nohighlight">\( \mathbf{A} \)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{A}\mathbf{x} = \lambda \mathbf{x} \quad (\text{Eigenvalue equation})
+\]</div>
+<p>The eigenvalues of <span class="math notranslate nohighlight">\( \mathbf{A} \)</span> are roots of the characteristic equation:</p>
+<div class="math notranslate nohighlight">
+\[
+\det(\mathbf{A} - \lambda \mathbf{I}) = 0
+\]</div>
+<p>with <span class="math notranslate nohighlight">\( \mathbf{I} \)</span> the identity matrix corresponding to <span class="math notranslate nohighlight">\( \mathbf{A} \)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\det(\mathbf{A} - \lambda \mathbf{I}) = 
+\det
+\begin{bmatrix}
+a_1 &amp; b_1 &amp; c_1 \\
+a_2 &amp; b_2 &amp; c_2 \\
+a_3 &amp; b_3 &amp; c_3
+\end{bmatrix}
+- \lambda 
+\det
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}
+= 
+\det
+\begin{bmatrix}
+a_1 - \lambda &amp; b_1 &amp; c_1 \\
+a_2 &amp; b_2 - \lambda &amp; c_2 \\
+a_3 &amp; b_3 &amp; c_3 - \lambda
+\end{bmatrix}
+\end{split}\]</div>
+<p>Resolving this equation (using Sarrus’s rule), we will have an equation like:</p>
+<div class="math notranslate nohighlight">
+\[
+a\lambda^3 + b\lambda^2 + c\lambda + d = 0
+\]</div>
+<p>After solving this equation we got our eigenvalues <span class="math notranslate nohighlight">\( \lambda_1, \lambda_2, \lambda_3 \)</span>. Let’s assume that:</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_1 &gt; \lambda_2 &gt; \lambda_3 \tag{a}
+\]</div>
+<p>Knowing the eigenvalues, we can then compute eigenvectors by solving the previous equation:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{A}\mathbf{x} = \lambda \mathbf{x}
+\]</div>
+<p>That lead us to three different eigenvectors (in our case because data has 3 features):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{v}_1 = 
+\begin{bmatrix}
+v_{11} \\
+v_{12} \\
+v_{13}
+\end{bmatrix}, \quad
+\mathbf{v}_2 =
+\begin{bmatrix}
+v_{21} \\
+v_{22} \\
+v_{23}
+\end{bmatrix}, \quad
+\mathbf{v}_3 =
+\begin{bmatrix}
+v_{31} \\
+v_{32} \\
+v_{33}
+\end{bmatrix}
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\( \mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3 \)</span> respectively the eigenvector of <span class="math notranslate nohighlight">\( \lambda_1, \lambda_2, \lambda_3 \)</span>.</p>
+</section>
+<hr class="docutils" />
+<section id="capture-the-principal-components">
+<h2>Capture the principal components<a class="headerlink" href="#capture-the-principal-components" title="Link to this heading">#</a></h2>
+<p>Now the final part is to choose the number <span class="math notranslate nohighlight">\( k \le n \)</span> of principal component to retain.</p>
+<p>Let’s choose <span class="math notranslate nohighlight">\( k = 2 \)</span> in our case. Because of assumption in (a), we’ll retain the correspondent eigenvectors for <span class="math notranslate nohighlight">\( \lambda_1 \)</span> and <span class="math notranslate nohighlight">\( \lambda_2 \)</span>: <span class="math notranslate nohighlight">\( v1 \)</span> and <span class="math notranslate nohighlight">\( v2 \)</span></p>
+<p>The <span class="math notranslate nohighlight">\( n \times k \)</span> matrix <span class="math notranslate nohighlight">\( \mathbf{W} \)</span> can be written as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{W} = 
+\begin{bmatrix}
+v_{11} &amp; v_{21} \\
+v_{12} &amp; v_{22} \\
+v_{13} &amp; v_{23}
+\end{bmatrix}
+\end{split}\]</div>
+<p>We use the <span class="math notranslate nohighlight">\( 3 \times 2 \)</span> dimensional matrix <span class="math notranslate nohighlight">\( \mathbf{W} \)</span> that we just computed to transform our samples onto the new subspace via the equation:</p>
+<div class="math notranslate nohighlight">
+\[
+y = \mathbf{W}^T \times data^T
+\]</div>
+<p>And we’ve done. ☕!</p>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+  
+  
+
+
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+    
+    
+    <a href="empirical-mode-decomposition.html">
+      
+      <i class="fa fa-arrow-circle-left"></i>
+      
+      <span>Empirical Mode Decomposition</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+    
+    
+    <a href="cnn-architecture-principle.html">
+      <span>Brief introduction to Convolutional Neural Networks</span>
+      
+      <i class="fa fa-arrow-circle-right" ></i>
+      
+    </a>
+    
+  </span>
+</div>
+
+  
+  
+  <div class="section ablog__comments">
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname = "disqus_qfyj9nwrcT";
+      var disqus_identifier = "/posts/2021/principal-component-analysis/";
+      var disqus_title = "Principal Component Analysis";
+      var disqus_url = "https://godwinh19.github.io/posts/2021/principal-component-analysis";
+
+      (function () {
+        var dsq = document.createElement("script");
+        dsq.type = "text/javascript";
+        dsq.async = true;
+        dsq.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+        (
+          document.getElementsByTagName("head")[0] ||
+          document.getElementsByTagName("body")[0]
+        ).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+      Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript">
+        comments powered by Disqus.</a ></noscript >
+    <a href="https://disqus.com" class="dsq-brlink">
+      comments powered by <span class="logo-disqus">Disqus</span>
+    </a >
+  </div>
+  
+</div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-matrix">Covariance matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-eigenvalues-and-eigenvectors">Compute eigenvalues and eigenvectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capture-the-principal-components">Capture the principal components</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p style="text-align:center; font-size:0.9rem; color:#666;">
+  © Copyright 2022, Godwin H.
+  <br>
+  Powered by <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+  and the <a href="https://pydata-sphinx-theme.readthedocs.io/" target="_blank" rel="noopener">PyData Sphinx Theme</a>.
+  <br>
+  <a href="https://github.com/godwinh19" target="_blank">GitHub</a> ·
+  <a href="/about">About</a> ·
+  <a href="/blog">Blog</a>
+</p>
+
+<!--2022 Godwin Houdji — Built with ❤️, data, and too much ☕--></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

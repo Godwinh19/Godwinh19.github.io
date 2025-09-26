@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <id>https://godwinh19.github.io/</id>
+  <title>All Posts</title>
+  <updated>2025-09-26T14:19:37.362698+00:00</updated>
+  <link href="https://godwinh19.github.io/"/>
+  <link href="https://godwinh19.github.io/blog/atom.xml" rel="self"/>
+  <generator uri="https://ablog.readthedocs.io/" version="0.11.10">ABlog</generator>
+  <entry>
+    <id>https://godwinh19.github.io/posts/2022/the-transformer-architecture-pytorch.html</id>
+    <title>Architecture du transformer et implémentation avec Pytorch (Partie I)</title>
+    <updated>2022-05-26T00:00:00+00:00</updated>
+    <content type="html">&lt;p class="ablog-post-excerpt"&gt;&lt;p&gt;&lt;strong&gt;Qu’est ce qu’un transformer ?:&lt;/strong&gt;
+Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en
+suivant les relations dans les données séquentielles comme les mots de cette phrase.
+Dans la version originale de leur papier &lt;a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener"&gt;Attention Is All You Need&lt;/a&gt;, les auteurs définissent le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d’attention, exemptée entièrement de récurrence ou de convolution.&lt;/p&gt;
+&lt;/p&gt;
+</content>
+    <link href="https://godwinh19.github.io/posts/2022/the-transformer-architecture-pytorch.html"/>
+    <summary>Qu’est ce qu’un transformer ?:
+Un modèle de transformer est un réseau neuronal qui apprend le contexte et donc le sens en
+suivant les relations dans les données séquentielles comme les mots de cette phrase.
+Dans la version originale de leur papier &lt;a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener"&gt;Attention Is All You Need&lt;/a&gt;, les auteurs définissent le transformer comme une nouvelle architecture de réseau simple basée uniquement sur les mécanismes d’attention, exemptée entièrement de récurrence ou de convolution.</summary>
+    <category term="attention" label="attention"/>
+    <category term="deep-learning" label="deep-learning"/>
+    <category term="nlp" label="nlp"/>
+    <category term="transformers" label="transformers"/>
+    <published>2022-05-26T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://godwinh19.github.io/posts/2022/bert-classification-for-research-papers.html</id>
+    <title>Bert Classification For Research Papers</title>
+    <updated>2022-03-22T00:00:00+00:00</updated>
+    <content type="html">&lt;p class="ablog-post-excerpt"&gt;&lt;p&gt;&lt;em&gt;&lt;strong&gt;Our goal is to build a model that uses the abstract and title of a paper to predict whether it will be rejected or not.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/p&gt;
+</content>
+    <link href="https://godwinh19.github.io/posts/2022/bert-classification-for-research-papers.html"/>
+    <summary>Our goal is to build a model that uses the abstract and title of a paper to predict whether it will be rejected or not.</summary>
+    <category term="bert" label="bert"/>
+    <category term="deep-learning" label="deep-learning"/>
+    <category term="nlp" label="nlp"/>
+    <category term="transformers" label="transformers"/>
+    <published>2022-03-22T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://godwinh19.github.io/posts/2021/normalisation-par-lots.html</id>
+    <title>La normalisation par lots</title>
+    <updated>2021-12-11T00:00:00+00:00</updated>
+    <content type="html">&lt;p class="ablog-post-excerpt"&gt;&lt;p&gt;Dans cet article, je vais vous parler d’une technique efficace pour améliorer vos modèles de deep learning et les rendre plus puissants: la normalisation par lots ou en anglais batch normalization. Nous allons suivre la chronologie suivant les grands points qui sont:&lt;/p&gt;
+&lt;/p&gt;
+</content>
+    <link href="https://godwinh19.github.io/posts/2021/normalisation-par-lots.html"/>
+    <summary>Dans cet article, je vais vous parler d’une technique efficace pour améliorer vos modèles de deep learning et les rendre plus puissants: la normalisation par lots ou en anglais batch normalization. Nous allons suivre la chronologie suivant les grands points qui sont:</summary>
+    <category term="batch-normalisation" label="batch-normalisation"/>
+    <category term="deep-learning" label="deep-learning"/>
+    <category term="pytorch" label="pytorch"/>
+    <published>2021-12-11T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://godwinh19.github.io/posts/2021/cnn-architecture-principle.html</id>
+    <title>Brief introduction to Convolutional Neural Networks</title>
+    <updated>2021-08-17T00:00:00+00:00</updated>
+    <content type="html">&lt;p class="ablog-post-excerpt"&gt;&lt;p&gt;If you are reading this post, it means you know about convolutional neural networks (CNN) or you have heard about it before. But why should you read what I am offering you here? Indeed, there is a lot of documentation, tutorials, articles, and videos on this subject — often with complex mathematical notions that are difficult to understand. I read a lot on CNNs to understand part of it. It is a small and vast domain at the same time; once you understand the basics, leveling up becomes relatively straightforward.&lt;/p&gt;
+&lt;/p&gt;
+</content>
+    <link href="https://godwinh19.github.io/posts/2021/cnn-architecture-principle.html"/>
+    <summary>If you are reading this post, it means you know about convolutional neural networks (CNN) or you have heard about it before. But why should you read what I am offering you here? Indeed, there is a lot of documentation, tutorials, articles, and videos on this subject — often with complex mathematical notions that are difficult to understand. I read a lot on CNNs to understand part of it. It is a small and vast domain at the same time; once you understand the basics, leveling up becomes relatively straightforward.</summary>
+    <category term="cnn" label="cnn"/>
+    <category term="deep-learning" label="deep-learning"/>
+    <category term="vision" label="vision"/>
+    <published>2021-08-17T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://godwinh19.github.io/posts/2021/principal-component-analysis.html</id>
+    <title>Principal Component Analysis</title>
+    <updated>2021-05-14T00:00:00+00:00</updated>
+    <content type="html">&lt;p class="ablog-post-excerpt"&gt;&lt;p&gt;The Principal Component Analysis (PCA) is a dimension reduction technique widely used. Given a dataset with &lt;span class="math notranslate nohighlight"&gt;\(n\)&lt;/span&gt; features,
+the aim is to have &lt;span class="math notranslate nohighlight"&gt;\(k\)&lt;/span&gt; feature with &lt;span class="math notranslate nohighlight"&gt;\(k\le n\)&lt;/span&gt; so as the features retain most of the variation present in all of the original variables.&lt;/p&gt;
+&lt;/p&gt;
+</content>
+    <link href="https://godwinh19.github.io/posts/2021/principal-component-analysis.html"/>
+    <summary>The Principal Component Analysis (PCA) is a dimension reduction technique widely used. Given a dataset with n features,
+the aim is to have k feature with k\le n so as the features retain most of the variation present in all of the original variables.</summary>
+    <category term="dimensionality-reduction" label="dimensionality-reduction"/>
+    <category term="machine-learning" label="machine-learning"/>
+    <category term="pca" label="pca"/>
+    <category term="unsupervised-learning" label="unsupervised-learning"/>
+    <published>2021-05-14T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://godwinh19.github.io/posts/2021/empirical-mode-decomposition.html</id>
+    <title>Empirical Mode Decomposition</title>
+    <updated>2021-05-06T00:00:00+00:00</updated>
+    <content type="html">&lt;p class="ablog-post-excerpt"&gt;&lt;p&gt;Introduced by &lt;em&gt;Hilbert–Huang&lt;/em&gt;, Empirical Mode Decomposition (EMD) is a data-driven method that used as a propelling tool for analyzing and decomposing non-stationary and non-linear data. EMD generates a finite and often small number of the frequency and amplitude modulated signals, intrinsic mode functions (IMF).&lt;/p&gt;
+&lt;/p&gt;
+</content>
+    <link href="https://godwinh19.github.io/posts/2021/empirical-mode-decomposition.html"/>
+    <summary>Introduced by Hilbert–Huang, Empirical Mode Decomposition (EMD) is a data-driven method that used as a propelling tool for analyzing and decomposing non-stationary and non-linear data. EMD generates a finite and often small number of the frequency and amplitude modulated signals, intrinsic mode functions (IMF).</summary>
+    <category term="data-decomposition" label="data-decomposition"/>
+    <category term="machine-learning" label="machine-learning"/>
+    <category term="signal-processing" label="signal-processing"/>
+    <category term="time-serie" label="time-serie"/>
+    <published>2021-05-06T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://godwinh19.github.io/posts/2021/logistic-regression.html</id>
+    <title>What to know about Logistic Regression ?</title>
+    <updated>2021-04-23T00:00:00+00:00</updated>
+    <content type="html">&lt;p class="ablog-post-excerpt"&gt;&lt;p&gt;When it comes to make machine learning (ML) classification task, there is Logistic Regression which make compromise between performance and results. Through this article, we’ll deep into the different steps to make a ML algorithm, how Logistic Regression work and of course an explanation of Gradient descent.&lt;/p&gt;
+&lt;/p&gt;
+</content>
+    <link href="https://godwinh19.github.io/posts/2021/logistic-regression.html"/>
+    <summary>When it comes to make machine learning (ML) classification task, there is Logistic Regression which make compromise between performance and results. Through this article, we’ll deep into the different steps to make a ML algorithm, how Logistic Regression work and of course an explanation of Gradient descent.</summary>
+    <category term="classification" label="classification"/>
+    <category term="gradient-descent" label="gradient-descent"/>
+    <category term="regression" label="regression"/>
+    <category term="supervised-learning" label="supervised-learning"/>
+    <published>2021-04-23T00:00:00+00:00</published>
+  </entry>
+</feed>

@@ -1,0 +1,220 @@
+---
+blogpost: true
+date: Apr 23, 2021
+tags: classification, gradient-descent, regression, supervised-learning
+category: Machine Learning
+---
+
+# What to know about Logistic Regression ?
+
+When it comes to make machine learning (ML) classification task, there is Logistic Regression which make compromise between performance and results. Through this article, we'll deep into the different steps to make a ML algorithm, how Logistic Regression work and of course an explanation of Gradient descent.
+
+---
+
+## ML algorithms steps
+
+To go from raw data to an ML model, we mainly go through 3 main stages:
+
+- the definition of a hypothesis function  
+- the development of a cost function  
+- minimization of the cost function  
+
+### The hypothesis function
+
+We assume that we have information on the income of clients $(X)$ in an insurance company. Based on the client's income, he receives targeted advertisements $(Y)$ to subscribe to the services.
+
+The objective is to find the best function which will have the role of approximating the output values $Y$, in other word make good suggestion for clients.
+
+$$
+\textit{Input } X \overset{\text{hypothesis function } h}{\Longrightarrow} Y
+$$
+
+---
+
+### The cost function
+
+Because we are approximating the output values, it is obvious that we have errors. Indeed, each output value $ y_i $ of our hypothesis function is more or less close to the real value.  
+An example to calculate the error is given by:
+
+$$
+\big(h(x_i) - y_i\big)^2
+$$
+
+The cost function will therefore be the average of the unit errors of the output values of the hypothesis function:
+
+$$
+J(\theta) = \frac{1}{m} \sum_{i=1}^{m} j\big(h(x_i), y_i\big)
+$$
+
+with $ m $: number of outputs  
+and $ \theta $: the vector of the parameters.
+
+
+---
+
+### The minimization of the cost function
+
+The objective is to find the parameters of the hypothesis function that best approximates the outputs. For this, we will retain those which produce a minimum value of the cost function. A widely used technique is gradient descent.
+
+Gradient descent (GD) is an iterative method whose principle is quite intuitive: what would a ball dropped high enough in a bowl do? She would take the best slope at any time to the bottom of the bowl.
+
+Steps / mathematical formula for gradient descent: Given a two features, how we compute GD ?
+
+1. Iteration 0: initialization of couple $ (\theta_0, \theta_1) $  
+2. Iterate until convergence  
+
+$$
+\Theta_j := \Theta_j - \alpha \frac{\partial J(\Theta_0, \Theta_1)}{\partial \Theta_j} 
+\quad \text{for } i = 1 \text{ and } 0
+$$
+
+$ \alpha $ being the "learning rate" which physically represents the speed at which we want to complete our iterations.  
+The larger $ \alpha $, the greater the step between two iterations, but the greater the probability of going beyond the minimum or even of diverging; the opposite slows down the training of our algorithm.
+
+---
+
+## Logistic Regression
+
+Logistic regression (LR) is a classic in classification. It can be seen as an improvement of linear regression. *In this post we’ll use an example of binary classification*
+
+### Hypothesis function
+
+Theoretically, we could use:
+
+$$
+LR(x) = 
+\begin{cases}
+0, & h(x) < 0.5 \\
+1, & h(x) \geq 0.5
+\end{cases}
+$$
+
+However, this way is not optimal. Thus in LR, the function $ h $ must respect the following condition:
+
+$$
+0 \leq h(x) \leq 1 \\
+h(x) = P(y = 1 \mid x, \theta) \\
+\theta \text{ the vector of the parameters}
+$$
+
+To compute this formula above, we refer to mathematical functions such as sigmoid functions: Gompertz curve, the distribution function of the reduced centered normal law, the distribution function of the logistic law, the logistic function. The latter is an evolution of the distribution function of the logistic law and is widely used.  
+The logistic function is:
+
+$$
+g(t) = \frac{1}{1 + e^{-t}}
+$$
+
+For the observation $ x_i $, the probability of predicting a 1 given $ x_i $ and $ \theta $ is given by:
+
+$$
+g(X_i, \theta) = g(\theta_0 + \theta_1 X_{i1} + \theta_2 X_{i2} + \dots + \theta_m X_{im})
+$$
+
+So to take decision:
+
+$$
+LR(x) = 
+\begin{cases}
+1, & g(x; \theta) \geq 0.5 \\
+0, & g(x; \theta) < 0.5
+\end{cases}
+$$
+
+
+```python
+class LogisticRegression(object):
+    def __init__(self, x, y, lr=0.01):
+        self.lr = lr
+        n = x.shape[1]  # get number of independent variables
+        self.w = np.zeros((1, n))  # initialization of weights to 0
+        self.b = 0.5  # set starting value/bias to 0.5
+
+    def predict(self, x):
+        """
+        x: data to predict
+        return predictions
+        """
+        z = x @ self.w.T + self.b
+        p = expit(z)  # Logistic sigmoid function
+        return p
+```
+
+### The cost function
+
+A function that strongly penalizes false positives and false negatives:
+
+$$
+j(h(x), y) =
+\begin{cases}
+-\log(h(x)), & y = 1 \\
+-\log(1 - h(x)), & y = 0
+\end{cases}
+\quad \Longrightarrow \quad 
+- y \log(h(x)) - (1 - y) \log(1 - h(x))
+$$
+
+The overall cost function will be:
+
+$$
+J(\theta) = \frac{1}{m} \sum_{i=1}^{m} \big[ y \log(h(x)) + (1 - y) \log(1 - h(x)) \big]
+$$
+
+The code of the cost function can be write as:
+```python
+def cost(self, x, y):
+    """
+    cost function
+    x: Input data
+    y: output data
+    """
+    p = self.predict(x)
+    cost = - np.mean(y*np.log(p) + (1-y)*np.log(1-p)) #cross entropy coss function
+    return cost
+```
+### Minimization of cost function
+Using python, let's implement our cost function for Logistic Regression as we discussed at cost function part.
+
+```python
+def gradient_descent(self, x, y):
+    p = self.predict(x)
+    
+    #Partial Derivation
+    dw = np.mean((p-y)*x, axis=0) #dJ/dw
+    db = np.mean(p-y)             #dJ/db
+    
+    #We update the values of w and b
+    self.w = self.w - dw*self.lr
+    self.b = self.b - db*self.lr
+```
+Finally, to train our function, we'll proceed like this:
+
+```python
+def fit(self, x, y, epochs=100000):
+    """
+    x: Input data
+    y: output data
+    epochs: Number of epochs
+    We create differents vectors in order to store all weights, bias, cost and predicted values (for connection lines)
+    """
+    self.Weights = np.zeros((epochs, x.shape[1]))
+    self.Biases = np.zeros((epochs, x.shape[1]))
+    self.Costs = np.zeros((epochs, x.shape[1]))
+    self.Cl = np.zeros((epochs, len(x)))
+    
+    for step in range(epochs):
+        self.Weights[step] = self.w
+        self.Biases[step] = self.b
+        self.Costs[step] = self.cost(x,y)
+        self.Cl[step] = (self.predict(x)).T.flatten() #flatten to get a vector
+        self.gradient_descent(x,y) #to update parameters values
+```
+
+That's all! I hope you found this article helpful. If any questions arise or you've noticed any mistakes, please leave a comment/issue.
+
+You can find the complete GitHub code <a href="https://github.com/Godwinh19/ds-portfolio/tree/main/LogisticRegression" target="_blank" rel="noopener">Here</a>
+
+## References
+
+1. <a href="https://towardsdatascience.com/animations-of-logistic-regression-with-python" target="_blank" rel="noopener">https://towardsdatascience.com/animations-of-logistic-regression-with-python</a>
+2. <a href="https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html" target="_blank" rel="noopener">https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html</a>
+3. Eric Biernat, Michel Lutz, "Data Science : fondamentaux et études de cas"

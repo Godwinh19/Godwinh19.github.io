@@ -1,0 +1,28 @@
+# About me
+
+## Godwin Houdji
+**Data & AI**
+
+> *I love data, and I love turning it into intelligence.*
+
+I’m exploring how data, language, and technology can drive real-world impact.  
+I build tools that make tech genuinely useful from natural language processing for underrepresented languages to experiments measuring how digital learning shapes livelihoods.  
+
+I practise Qi Gong, enjoy learning new things, and constantly test and build always chasing better ideas and meaningful collaborations along the way.
+
+## Publications
+
+See my <a href="https://orcid.org/0000-0002-7575-1621" target="_blank" rel="noopener">ORCID profile</a> for a list of publications.
+
+- **N-Beats as an EHG Signal Forecasting Method for Labour Prediction in Full-Term Pregnancy**  
+  *2022, International Conference on Electrical, Computer and Energy Technologies (ICECET)*  
+  Research on using deep learning models to predict labor from electrohysterogram signals.
+
+- **Best Parameters Selection for Full-Term Pregnancy’s Uterine Contractions Characterization**  
+  *2022, ICECET Proceedings*  
+  Methodological work on improving pregnancy monitoring through signal parameter optimization.
+
+- **Smart Model of Accessibility and Mobility of Health Care**  
+  *2021, Research Paper*  
+  Exploring AI-driven models for improving healthcare access and planning.
+
