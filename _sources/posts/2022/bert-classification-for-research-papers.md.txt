@@ -499,7 +499,3 @@ Our used dataset is very small, we will increase it but anyway our model perform
 In a next article, we will see how we can monitor our models, put in production the best performing ones while having the best parameters.
 
 Cheers ☕!
-
-```{disqus}
-:disqus_identifier: bert-clasification-for-research-paper
-```

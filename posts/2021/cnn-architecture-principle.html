@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Brief introduction to Convolutional Neural Networks &#8212; Godwin H</title>
   
@@ -28,22 +29,25 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nav.css?v=9d3b4cd0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nav.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'posts/2021/cnn-architecture-principle';</script>
     <link rel="canonical" href="https://godwinh19.github.io/posts/2021/cnn-architecture-principle.html" />
-    <link rel="icon" href="../../_static/ico.png"/>
+    <link rel="shortcut icon" href="../../_static/ico.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -434,20 +438,20 @@ document.write(`
                 <article class="bd-article">
                   
 <section class="tex2jax_ignore mathjax_ignore" id="brief-introduction-to-convolutional-neural-networks">
-<h1>Brief introduction to Convolutional Neural Networks<a class="headerlink" href="#brief-introduction-to-convolutional-neural-networks" title="Link to this heading">#</a></h1>
+<h1>Brief introduction to Convolutional Neural Networks<a class="headerlink" href="#brief-introduction-to-convolutional-neural-networks" title="Permalink to this heading">#</a></h1>
 <p>If you are reading this post, it means you know about convolutional neural networks (CNN) or you have heard about it before. But why should you read what I am offering you here? Indeed, there is a lot of documentation, tutorials, articles, and videos on this subject — often with complex mathematical notions that are difficult to understand. I read a lot on CNNs to understand part of it. It is a small and vast domain at the same time; once you understand the basics, leveling up becomes relatively straightforward.</p>
 <p>At the end of the presentation, I will suggest two interesting resources to deepen or broaden your understanding.</p>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>CNN is a type of Artificial Neural Network (ANN) used in image recognition and processing. It’s also widely used for video processing.</p>
 <p><img alt="Basic architecture of CNN" src="../../_images/cnn_basic_architecture.PNG" /></p>
 </section>
 <section id="cnn-process">
-<h2>CNN process<a class="headerlink" href="#cnn-process" title="Link to this heading">#</a></h2>
+<h2>CNN process<a class="headerlink" href="#cnn-process" title="Permalink to this heading">#</a></h2>
 <p>A CNN sliding through a given matrix.</p>
 <p><img alt="Convolution illustration" src="../../_images/covolution_illustration.gif" /></p>
 <section id="convolution-layer">
-<h3>Convolution Layer<a class="headerlink" href="#convolution-layer" title="Link to this heading">#</a></h3>
+<h3>Convolution Layer<a class="headerlink" href="#convolution-layer" title="Permalink to this heading">#</a></h3>
 <p>Suppose we have an input matrix <span class="math notranslate nohighlight">\(X\)</span> of dimension <span class="math notranslate nohighlight">\(4 \times 4\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -492,7 +496,7 @@ Y_{2,1} = e \cdot k_{11} + f \cdot k_{12} + i \cdot k_{21} + j \cdot k_{22}
 <p><a href="https://poloclub.github.io" target="_blank" rel="noopener">See interactive explanation on CNN</a></p>
 </section>
 <section id="pooling">
-<h3>Pooling<a class="headerlink" href="#pooling" title="Link to this heading">#</a></h3>
+<h3>Pooling<a class="headerlink" href="#pooling" title="Permalink to this heading">#</a></h3>
 <p>The aim of pooling is gradually decreasing the spatial extent of the network.</p>
 <p>By using Max Pooling:</p>
 <div class="math notranslate nohighlight">

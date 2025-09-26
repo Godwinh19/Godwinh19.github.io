@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>What to know about Logistic Regression ? &#8212; Godwin H</title>
   
@@ -28,22 +29,25 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nav.css?v=9d3b4cd0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nav.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'posts/2021/logistic-regression';</script>
     <link rel="canonical" href="https://godwinh19.github.io/posts/2021/logistic-regression.html" />
-    <link rel="icon" href="../../_static/ico.png"/>
+    <link rel="shortcut icon" href="../../_static/ico.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -434,11 +438,11 @@ document.write(`
                 <article class="bd-article">
                   
 <section class="tex2jax_ignore mathjax_ignore" id="what-to-know-about-logistic-regression">
-<h1>What to know about Logistic Regression ?<a class="headerlink" href="#what-to-know-about-logistic-regression" title="Link to this heading">#</a></h1>
+<h1>What to know about Logistic Regression ?<a class="headerlink" href="#what-to-know-about-logistic-regression" title="Permalink to this heading">#</a></h1>
 <p>When it comes to make machine learning (ML) classification task, there is Logistic Regression which make compromise between performance and results. Through this article, we’ll deep into the different steps to make a ML algorithm, how Logistic Regression work and of course an explanation of Gradient descent.</p>
 <hr class="docutils" />
 <section id="ml-algorithms-steps">
-<h2>ML algorithms steps<a class="headerlink" href="#ml-algorithms-steps" title="Link to this heading">#</a></h2>
+<h2>ML algorithms steps<a class="headerlink" href="#ml-algorithms-steps" title="Permalink to this heading">#</a></h2>
 <p>To go from raw data to an ML model, we mainly go through 3 main stages:</p>
 <ul class="simple">
 <li><p>the definition of a hypothesis function</p></li>
@@ -446,7 +450,7 @@ document.write(`
 <li><p>minimization of the cost function</p></li>
 </ul>
 <section id="the-hypothesis-function">
-<h3>The hypothesis function<a class="headerlink" href="#the-hypothesis-function" title="Link to this heading">#</a></h3>
+<h3>The hypothesis function<a class="headerlink" href="#the-hypothesis-function" title="Permalink to this heading">#</a></h3>
 <p>We assume that we have information on the income of clients <span class="math notranslate nohighlight">\((X)\)</span> in an insurance company. Based on the client’s income, he receives targeted advertisements <span class="math notranslate nohighlight">\((Y)\)</span> to subscribe to the services.</p>
 <p>The objective is to find the best function which will have the role of approximating the output values <span class="math notranslate nohighlight">\(Y\)</span>, in other word make good suggestion for clients.</p>
 <div class="math notranslate nohighlight">
@@ -456,7 +460,7 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="the-cost-function">
-<h3>The cost function<a class="headerlink" href="#the-cost-function" title="Link to this heading">#</a></h3>
+<h3>The cost function<a class="headerlink" href="#the-cost-function" title="Permalink to this heading">#</a></h3>
 <p>Because we are approximating the output values, it is obvious that we have errors. Indeed, each output value <span class="math notranslate nohighlight">\( y_i \)</span> of our hypothesis function is more or less close to the real value.<br />
 An example to calculate the error is given by:</p>
 <div class="math notranslate nohighlight">
@@ -473,7 +477,7 @@ and <span class="math notranslate nohighlight">\( \theta \)</span>: the vector o
 </section>
 <hr class="docutils" />
 <section id="the-minimization-of-the-cost-function">
-<h3>The minimization of the cost function<a class="headerlink" href="#the-minimization-of-the-cost-function" title="Link to this heading">#</a></h3>
+<h3>The minimization of the cost function<a class="headerlink" href="#the-minimization-of-the-cost-function" title="Permalink to this heading">#</a></h3>
 <p>The objective is to find the parameters of the hypothesis function that best approximates the outputs. For this, we will retain those which produce a minimum value of the cost function. A widely used technique is gradient descent.</p>
 <p>Gradient descent (GD) is an iterative method whose principle is quite intuitive: what would a ball dropped high enough in a bowl do? She would take the best slope at any time to the bottom of the bowl.</p>
 <p>Steps / mathematical formula for gradient descent: Given a two features, how we compute GD ?</p>
@@ -492,10 +496,10 @@ The larger <span class="math notranslate nohighlight">\( \alpha \)</span>, the g
 </section>
 <hr class="docutils" />
 <section id="logistic-regression">
-<h2>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Link to this heading">#</a></h2>
+<h2>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Permalink to this heading">#</a></h2>
 <p>Logistic regression (LR) is a classic in classification. It can be seen as an improvement of linear regression. <em>In this post we’ll use an example of binary classification</em></p>
 <section id="hypothesis-function">
-<h3>Hypothesis function<a class="headerlink" href="#hypothesis-function" title="Link to this heading">#</a></h3>
+<h3>Hypothesis function<a class="headerlink" href="#hypothesis-function" title="Permalink to this heading">#</a></h3>
 <p>Theoretically, we could use:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -551,7 +555,7 @@ LR(x) =
 </div>
 </section>
 <section id="id1">
-<h3>The cost function<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>The cost function<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p>A function that strongly penalizes false positives and false negatives:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -582,7 +586,7 @@ J(\theta) = \frac{1}{m} \sum_{i=1}^{m} \big[ y \log(h(x)) + (1 - y) \log(1 - h(x
 </div>
 </section>
 <section id="minimization-of-cost-function">
-<h3>Minimization of cost function<a class="headerlink" href="#minimization-of-cost-function" title="Link to this heading">#</a></h3>
+<h3>Minimization of cost function<a class="headerlink" href="#minimization-of-cost-function" title="Permalink to this heading">#</a></h3>
 <p>Using python, let’s implement our cost function for Logistic Regression as we discussed at cost function part.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -622,7 +626,7 @@ J(\theta) = \frac{1}{m} \sum_{i=1}^{m} \big[ y \log(h(x)) + (1 - y) \log(1 - h(x
 </section>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p><a href="https://towardsdatascience.com/animations-of-logistic-regression-with-python" target="_blank" rel="noopener">https://towardsdatascience.com/animations-of-logistic-regression-with-python</a></p></li>
 <li><p><a href="https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html" target="_blank" rel="noopener">https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html</a></p></li>

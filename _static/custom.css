@@ -1,1 +1,79 @@
-/* optional custom css */
+/* ===== Centered, narrow reading column (Lilian Weng style) ===== */
+
+/* Tweak a single source of truth for line length */
+:root {
+  --reading-width: 68ch;           /* ~65–75 chars per line = ideal */
+  --reading-side: min(92vw, var(--reading-width));
+}
+
+/* Center article content */
+.bd-main .bd-content {
+  display: flex;
+  justify-content: center;
+}
+
+/* PyData’s article container: make it narrow & centered */
+.bd-main .bd-content .bd-article-container,
+.bd-main .bd-content .article-container,
+.bd-main .bd-content .bd-article {
+  max-width: var(--reading-width);
+  width: var(--reading-side);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Typography polish for readability */
+.bd-content {
+  line-height: 1.75;
+  font-size: 1.04rem;
+}
+
+/* Headings: keep alignment and rhythm */
+.bd-content h1,
+.bd-content h2,
+.bd-content h3,
+.bd-content h4 {
+  line-height: 1.3;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+}
+
+/* Images & figures scale nicely and center */
+.bd-content img,
+.bd-content figure {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.25rem auto;
+}
+
+/* Code blocks don’t overflow; keep them within the reading width */
+.bd-content pre,
+.bd-content .highlight {
+  max-width: 100%;
+  overflow: auto;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Tables: scroll horizontally on small screens */
+.bd-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+/* Captions & small meta text */
+.bd-content figcaption,
+.bd-content .post-meta,
+.bd-content .caption {
+  color: var(--pst-color-text-muted);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* Slightly wider on very large screens */
+@media (min-width: 1400px) {
+  :root { --reading-width: 72ch; }
+}

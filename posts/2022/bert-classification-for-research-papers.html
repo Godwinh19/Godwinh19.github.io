@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Bert Classification For Research Papers &#8212; Godwin H</title>
   
@@ -28,20 +29,23 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nav.css?v=9d3b4cd0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nav.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'posts/2022/bert-classification-for-research-papers';</script>
     <link rel="canonical" href="https://godwinh19.github.io/posts/2022/bert-classification-for-research-papers.html" />
-    <link rel="icon" href="../../_static/ico.png"/>
+    <link rel="shortcut icon" href="../../_static/ico.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -432,7 +436,7 @@ document.write(`
                 <article class="bd-article">
                   
 <section class="tex2jax_ignore mathjax_ignore" id="bert-classification-for-research-papers">
-<h1>Bert Classification For Research Papers<a class="headerlink" href="#bert-classification-for-research-papers" title="Link to this heading">#</a></h1>
+<h1>Bert Classification For Research Papers<a class="headerlink" href="#bert-classification-for-research-papers" title="Permalink to this heading">#</a></h1>
 <p><em><strong>Our goal is to build a model that uses the abstract and title of a paper to predict whether it will be rejected or not.</strong></em></p>
 <p>This is an article with code to refine BERT to perform text classification on a dataset of accepted and rejected scientific papers.</p>
 <p>In this article, we will:</p>
@@ -445,7 +449,7 @@ document.write(`
 </ul>
 <p>At the end, you will have an architecture that you can reuse in your next text classification projects.</p>
 <section id="what-is-bert">
-<h2>What is BERT?<a class="headerlink" href="#what-is-bert" title="Link to this heading">#</a></h2>
+<h2>What is BERT?<a class="headerlink" href="#what-is-bert" title="Permalink to this heading">#</a></h2>
 <p>Introduced in 2018, <a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener">BERT: Bidirectional Encoder Representations from Transformers</a>, according to its authors, is designed to pre-train deep bidirectional representations from unlabeled text by <strong>conditioning left and right context</strong> together in all layers.</p>
 <p>BERT arose to complement two word embedding techniques: <a href="https://paperswithcode.com/method/elmo" target="_blank" rel="noopener">ELMo</a> and <a href="https://paperswithcode.com/method/gpt" target="_blank" rel="noopener">GPT</a>.
 While ELMo encodes the context bidirectionally but uses task-specific architectures GPT is task-independent but encodes the context from left to right.</p>
@@ -478,14 +482,14 @@ While ELMo encodes the context bidirectionally but uses task-specific architectu
 </table>
 </div>
 <section id="tools-and-pre-requisites">
-<h3>Tools and pre-requisites<a class="headerlink" href="#tools-and-pre-requisites" title="Link to this heading">#</a></h3>
+<h3>Tools and pre-requisites<a class="headerlink" href="#tools-and-pre-requisites" title="Permalink to this heading">#</a></h3>
 <p>To build our model, we will work with the Pytorch framework and <a href="https://www.pytorchlightning.ai/" target="_blank" rel="noopener">Pytorch Lightning</a></p>
 </section>
 </section>
 <section id="data-preparation">
-<h2>1- Data preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h2>
+<h2>1- Data preparation<a class="headerlink" href="#data-preparation" title="Permalink to this heading">#</a></h2>
 <section id="loading-data">
-<h3>1-1 Loading data<a class="headerlink" href="#loading-data" title="Link to this heading">#</a></h3>
+<h3>1-1 Loading data<a class="headerlink" href="#loading-data" title="Permalink to this heading">#</a></h3>
 <p>You can find the dataset used at this <a href="https://raw.githubusercontent.com/Godwinh19/Papers-Dataset/main/data/ICLR%20papers%20datasets.csv" target="_blank" rel="noopener">address</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -539,7 +543,7 @@ While ELMo encodes the context bidirectionally but uses task-specific architectu
 <p>In our case, we will be interested in the fields <em>title</em>, <em>abstract</em>, <em>accepted</em>.</p>
 </section>
 <section id="transforming-the-columns">
-<h3>1-2 Transforming the columns<a class="headerlink" href="#transforming-the-columns" title="Link to this heading">#</a></h3>
+<h3>1-2 Transforming the columns<a class="headerlink" href="#transforming-the-columns" title="Permalink to this heading">#</a></h3>
 <p>We are going to transform the <em>title</em> and <em>abstract</em> columns into a
 single column called <em>description</em>; then rename the <em>accepted</em> field
 into <em>label</em> by its function.</p>
@@ -575,7 +579,7 @@ into <em>label</em> by its function.</p>
 </div>
 </section>
 <section id="transformation-of-input-data-to-the-model">
-<h3>1-3 Transformation of input data to the model<a class="headerlink" href="#transformation-of-input-data-to-the-model" title="Link to this heading">#</a></h3>
+<h3>1-3 Transformation of input data to the model<a class="headerlink" href="#transformation-of-input-data-to-the-model" title="Permalink to this heading">#</a></h3>
 <blockquote>
 <div><p>The sample data processing code can become messy and difficult to maintain; ideally, we want the dataset code to be decoupled from the model training code for better readability and modularity.</p>
 <p><cite>pytorch docs</cite></p>
@@ -621,7 +625,7 @@ into <em>label</em> by its function.</p>
 </section>
 </section>
 <section id="loading-data-into-dataloaders">
-<h2>2- Loading data into dataloaders<a class="headerlink" href="#loading-data-into-dataloaders" title="Link to this heading">#</a></h2>
+<h2>2- Loading data into dataloaders<a class="headerlink" href="#loading-data-into-dataloaders" title="Permalink to this heading">#</a></h2>
 <p>Still with the objective of making the code neat and easy to maintain, we will make a last transformation which consists in loading the data into <code class="docutils literal notranslate"><span class="pre">dataloaders</span></code>. To do this we will use <em>pytorch lightning</em>.
 For more details, please read the documentation of the lightning data module which explains each step of the process <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/api/pytorch_lightning.core.datamodule.html#pytorch_lightning.core.datamodule.LightningDataModule">here</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytorch_lightning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -732,7 +736,7 @@ For more details, please read the documentation of the lightning data module whi
 </div>
 </section>
 <section id="building-the-network">
-<h2>3- Building the network<a class="headerlink" href="#building-the-network" title="Link to this heading">#</a></h2>
+<h2>3- Building the network<a class="headerlink" href="#building-the-network" title="Permalink to this heading">#</a></h2>
 <p>In this step, we will build our classifier from a model learned from BERT.</p>
 <p>The configuration of a model with pytorch lightning is explained <a href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html" target="_blank" rel="noopener">here</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytorch_lightning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
@@ -884,7 +888,7 @@ For more details, please read the documentation of the lightning data module whi
 </div>
 </section>
 <section id="training">
-<h2>4- Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<h2>4- Training<a class="headerlink" href="#training" title="Permalink to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pytorch_lightning</span><span class="w"> </span><span class="kn">import</span> <span class="n">Trainer</span>
 
@@ -925,7 +929,7 @@ DATALOADER:0 TEST RESULTS
 </div>
 </section>
 <section id="test">
-<h2>5- Test<a class="headerlink" href="#test" title="Link to this heading">#</a></h2>
+<h2>5- Test<a class="headerlink" href="#test" title="Permalink to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">article</span> <span class="o">=</span> <span class="s2">&quot;Sparse Quantized Spectral Clustering - Given a large data matrix, sparsifying, quantizing, and/or performing other entry-wise nonlinear operations can have numerous benefits, ranging from speeding up iterative algorithms for core numerical linear algebra problems to providing nonlinear filters to design state-of-the-art neural network models. Here, we exploit tools from random matrix theory to make precise statements about how the eigenspectrum of a matrix changes under such nonlinear transformations. In particular, we show that very little change occurs in the informative eigenstructure, even under drastic sparsification/quantization, and consequently that very little downstream performance loss occurs when working with very aggressively sparsified or quantized spectral clustering problems.</span><span class="se">\</span>
@@ -967,7 +971,7 @@ tensor([True])
 <p>Taking the example of <a href="https://openreview.net/forum?id=pBqLS-7KYAF" target="_blank" rel="noopener">this item</a> which was not in our data, our model returns an acceptance 😁:</p>
 </section>
 <section id="endnote">
-<h2>Endnote<a class="headerlink" href="#endnote" title="Link to this heading">#</a></h2>
+<h2>Endnote<a class="headerlink" href="#endnote" title="Permalink to this heading">#</a></h2>
 <p>The whole code is available <a href="https://github.com/Godwinh19/Papers-Dataset/" target="_blank" rel="noopener">here</a> (in french).
 Our used dataset is very small, we will increase it but anyway our model performs its function.
 In a next article, we will see how we can monitor our models, put in production the best performing ones while having the best parameters.</p>

@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Architecture du transformer et implémentation avec Pytorch (Partie I) &#8212; Godwin H</title>
   
@@ -28,20 +29,23 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nav.css?v=9d3b4cd0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nav.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'posts/2022/the-transformer-architecture-pytorch';</script>
     <link rel="canonical" href="https://godwinh19.github.io/posts/2022/the-transformer-architecture-pytorch.html" />
-    <link rel="icon" href="../../_static/ico.png"/>
+    <link rel="shortcut icon" href="../../_static/ico.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -432,7 +436,7 @@ document.write(`
                 <article class="bd-article">
                   
 <section class="tex2jax_ignore mathjax_ignore" id="architecture-du-transformer-et-implementation-avec-pytorch-partie-i">
-<h1>Architecture du transformer et implémentation avec Pytorch (Partie I)<a class="headerlink" href="#architecture-du-transformer-et-implementation-avec-pytorch-partie-i" title="Link to this heading">#</a></h1>
+<h1>Architecture du transformer et implémentation avec Pytorch (Partie I)<a class="headerlink" href="#architecture-du-transformer-et-implementation-avec-pytorch-partie-i" title="Permalink to this heading">#</a></h1>
 <figure>
 <img src="https://www.researchgate.net/profile/Dennis-Gannon-2/publication/339390384/figure/fig1/AS:860759328321536@1582232424168/The-transformer-model-from-Attention-is-all-you-need-Viswani-et-al.jpg" alt="transformer-architecture">
 <figcaption align = "center"><b>Fig. Architecture du modèle du transformer</b></figcaption>
@@ -458,7 +462,7 @@ Dans la version originale de leur papier <a href="https://arxiv.org/abs/1706.037
 <p><strong>X</strong> constitue l’entrée et <strong>Y</strong> la sortie.</p>
 <p>Dans cette première partie, nous allons suivre le processus bloc par bloc afin de construire notre propre encoder du tranformer. Commençons par le point le plus important: le <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">attention</span></code>.</p>
 <section id="self-attention-ou-auto-attention">
-<h2>Self-Attention ou Auto-Attention<a class="headerlink" href="#self-attention-ou-auto-attention" title="Link to this heading">#</a></h2>
+<h2>Self-Attention ou Auto-Attention<a class="headerlink" href="#self-attention-ou-auto-attention" title="Permalink to this heading">#</a></h2>
 <p>Il existe plusieurs façons de mettre en œuvre une couche d’auto-attention, mais la plus courante est l’attention par produit scalaire, tirée de l’article présentant l’architecture du transformer Quatre étapes principales sont nécessaires pour mettre en œuvre ce mécanisme :</p>
 <ul class="simple">
 <li><p>Projection de chaque encastrement de jeton dans trois vecteurs appelés <code class="docutils literal notranslate"><span class="pre">key</span></code>,<code class="docutils literal notranslate"><span class="pre">query</span></code>,<code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></li>
@@ -575,7 +579,7 @@ Par la suite, appliquons la fonction softmax qui va permettre d’avoir une somm
 <p><img alt="math" src="https://latex.codecogs.com/svg.image?Attention(Q,K,V)&amp;space;=&amp;space;softmax(%5Cfrac%7BQK%5ET%7D%7B%5Csqrt%7Bd_k%7D%7D)V" /></p>
 </section>
 <section id="multi-head-attention-attention-a-tetes-multiples">
-<h2>Multi-head attention: attention à têtes multiples<a class="headerlink" href="#multi-head-attention-attention-a-tetes-multiples" title="Link to this heading">#</a></h2>
+<h2>Multi-head attention: attention à têtes multiples<a class="headerlink" href="#multi-head-attention-attention-a-tetes-multiples" title="Permalink to this heading">#</a></h2>
 <p>En pratique, la couche d’auto-attention applique trois transformations linéaires indépendantes à chaque incorporation pour générer les vecteurs de requête, de clé et de valeur. Ces transformations projettent les enchâssements et chaque projection porte son propre ensemble de paramètres apprenables, ce qui permet à la couche d’auto-attention de se concentrer sur différents aspects sémantiques de la séquence.</p>
 <p>Il s’avère également avantageux de disposer de plusieurs ensembles de projections linéaires, chacun représentant une tête d’attention.Mais pourquoi avons-nous besoin de plus d’une tête d’attention ? La raison est que la softmax d’une tête a tendance à se concentrer sur un seul aspect de la similarité. Le fait d’avoir plusieurs têtes permet au modèle de se concentrer sur plusieurs aspects à la fois. Par exemple, une tête peut se concentrer sur l’interaction sujet-verbe, tandis qu’une autre trouve des adjectifs proches. Il est évident que nous n’intégrons pas ces relations dans le modèle et qu’elles sont entièrement apprises à partir des données. Une analogie peut être faite avec les modèles de vision par ordinateur. Nous avons les filtres des réseaux neuronaux convolutifs, où un filtre peut être responsable de la détection des visages et un autre de la recherche des roues de voitures dans les images.</p>
 <p>Commençons d’abord par implémenter une seule attention à tête:</p>
@@ -628,7 +632,7 @@ Par la suite, appliquons la fonction softmax qui va permettre d’avoir une somm
 </div>
 </section>
 <section id="the-feed-forward-layer-ou-couche-a-propagation-avant">
-<h2>The Feed-Forward Layer ou couche à propagation avant<a class="headerlink" href="#the-feed-forward-layer-ou-couche-a-propagation-avant" title="Link to this heading">#</a></h2>
+<h2>The Feed-Forward Layer ou couche à propagation avant<a class="headerlink" href="#the-feed-forward-layer-ou-couche-a-propagation-avant" title="Permalink to this heading">#</a></h2>
 <p>Cette sous-couche dans le transformer est un simple réseau neuronal entièrement connecté à deux couches, mais avec une particularité : au lieu de traiter la séquence entière d’incorporations comme un vecteur unique, elle traite chaque incorporation indépendamment. C’est la raison pour laquelle cette couche est souvent appelée couche à propagation avant en fonction de la position.</p>
 <p>Une règle empirique tirée de la littérature est que le <code class="docutils literal notranslate"><span class="pre">hidden_size</span></code> de la première couche doit être quatre fois supérieure à la taille des embeddings, et une fonction d’activation <code class="docutils literal notranslate"><span class="pre">GELU</span></code> est le plus souvent utilisée.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">FeedForward</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -657,7 +661,7 @@ Par la suite, appliquons la fonction softmax qui va permettre d’avoir une somm
 <p>Nous avons maintenant tous les ingrédients pour créer une couche d’encodeur du transformer ! La seule décision qui reste à prendre est de savoir où placer les connexions de saut et la normalisation de la couche.</p>
 </section>
 <section id="layer-normalisation-ou-normalisation-de-couche">
-<h2>Layer Normalisation ou normalisation de couche<a class="headerlink" href="#layer-normalisation-ou-normalisation-de-couche" title="Link to this heading">#</a></h2>
+<h2>Layer Normalisation ou normalisation de couche<a class="headerlink" href="#layer-normalisation-ou-normalisation-de-couche" title="Permalink to this heading">#</a></h2>
 <p>Le transformer normalise chaque entrée du lot pour qu’elle ait une moyenne nulle et une variance unitaire. Les connexions de saut passent un tenseur (non traité) à la couche suivante du modèle et l’ajoute au tenseur traité. Dans la littérature, nous avons deux options possibles pour la normalisation:</p>
 <ul class="simple">
 <li><p>Normalisation post-couche: ici la normalisation est effectuée entre les connexions de saut. Cette disposition est délicate à former à partir de zéro car les gradients peuvent diverger. Pour cette raison, vous verrez souvent un concept connu sous le nom de <code class="docutils literal notranslate"><span class="pre">learning</span> <span class="pre">rate</span> <span class="pre">warm-up</span></code>, où le taux d’apprentissage est progressivement augmenté d’une petite valeur à une valeur maximale pendant l’entraînement.</p></li>
@@ -692,7 +696,7 @@ Par la suite, appliquons la fonction softmax qui va permettre d’avoir une somm
 <p>Actuellement les couches de l’encodeur sont invariants par rapport à la position des token. Nous allons ajouter cette nouvelle information en utilisant le <code class="docutils literal notranslate"><span class="pre">positional</span> <span class="pre">embeddings</span></code></p>
 </section>
 <section id="positional-embeddings-ou-encastrement-positionnels">
-<h2>Positional embeddings ou encastrement positionnels<a class="headerlink" href="#positional-embeddings-ou-encastrement-positionnels" title="Link to this heading">#</a></h2>
+<h2>Positional embeddings ou encastrement positionnels<a class="headerlink" href="#positional-embeddings-ou-encastrement-positionnels" title="Permalink to this heading">#</a></h2>
 <p>Son but est de permettre au modèle d’apprendre la formation des tokens. Etant donné qu’une phrase n’a de sens que si les ordres des mots sont respectés. Cette couche apprend cette constitution des mots.</p>
 <p>Créons un module Embeddings personnalisé qui combine une couche d’embeddings de tokens qui projette les <code class="docutils literal notranslate"><span class="pre">input_ids</span></code> au <em>hidden state dense</em> avec l’embedding positionnel qui fait la même chose pour les <code class="docutils literal notranslate"><span class="pre">position_ids</span></code>.
 Dans la configuration de <strong>BERT</strong> par exemple, la taille maximale d’un paragraphe pris en compte est de 512, ce qui veut dire que nous allons fixé comme position maximale d’un token à 512.
@@ -785,13 +789,13 @@ dropout.</p>
 <p>Ceci marque la fin de l’encodeur !!.</p>
 </section>
 <section id="endnote">
-<h2>Endnote<a class="headerlink" href="#endnote" title="Link to this heading">#</a></h2>
+<h2>Endnote<a class="headerlink" href="#endnote" title="Permalink to this heading">#</a></h2>
 <p>Le notebook est disponible <a href="https://github.com/Godwinh19/ds-portfolio/blob/main/transformer_architecture.ipynb" target="_blank" rel="noopener">ici</a>.
 Cheers ☕!</p>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="ressources">
-<h1>Ressources<a class="headerlink" href="#ressources" title="Link to this heading">#</a></h1>
+<h1>Ressources<a class="headerlink" href="#ressources" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>Natural Language Processing with Transformers <a href="https://github.com/nlp-with-transformers/notebooks" target="_blank" rel="noopener">github</a></p></li>
 <li><p>Natural Language Processing with Transformers <a href="https://www.oreilly.com/library/view/natural-language-processing/9781098103231/" target="_blank" rel="noopener">the book</a></p></li>
